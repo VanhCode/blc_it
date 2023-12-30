@@ -22,7 +22,7 @@
 //auto connect
 let publicKey;
 
-(async () => {
+(async () => { 
   await window.phantom.solana.connect();
   publicKey = window.phantom.solana.publicKey.toBase58();
   console.log(publicKey);
@@ -72,7 +72,7 @@ const mintNft = async () => {
       let res = await response.json();
       let transaction = toTransaction(res.result.encoded_transaction);
       console.log(res.result.encoded_transaction);
-      
+
       const signedTransaction= await window.phantom.solana.signTransaction(transaction);
       const connection=new solanaWeb3.Connection("https://api.devnet.solana.com");
       const signature = await connection.sendRawTransaction(signedTransaction.serialize());
