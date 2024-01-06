@@ -1,24 +1,3 @@
-// const APIgame='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJmZWVjNWQyNy1kMjQwLTQyNmEtYWFjYi05ZDQ5YjQyNWM5YjMiLCJzdWIiOiI2ZjY3ODI2MC1iMzI5LTQ0N2QtODg1My1jNzFjYzkzZDllYTciLCJpYXQiOjE3MDM5MTAzMDF9.iBmw0UBaGNyPd45YcqMT75UW2rpt794mElujgpXISLA';
-
-// let params={
-//   page: 1,
-//   perPage:50
-// }
-// const options = {
-//   method: 'GET',
-//    headers: {
-//     'accept': 'application/json',
-//     'x-api-key':APIgame
-//   },
-// };
-// params=Object.keys(params).map(k=>`${k}=${params[k]}`).join('&')
-// console.log(params);
-// fetch('https://api.gameshift.dev/assets?'+params, options)
-//   .then(response => response.json())
-//   .then(response => console.log(response))
-//   .catch(err => console.error(err));
-
-
 //auto connect
 let publicKey;
 
@@ -54,7 +33,7 @@ const mintNft = async () => {
   formdata.append("description", "Đến đây đi mấy con gà");
   formdata.append("attributes", '[{"trait_type":"dev power","value":"over 900"}]');
   formdata.append("external_url", "https://shyft.to");
-  formdata.append("max_supply", "1000000");//số lượng nft cần mint
+  formdata.append("max_supply", "1000000");//số lượng max nft có thể mint
   formdata.append("royalty", "5");//phí giao dịch người dùng cần trả khi giao dịch token của tôi
   formdata.append("file", fileInput.files[0], "FARMING.png");
   formdata.append("nft_receiver", "5KW2twHzRsAaiLeEx4zYNV35CV2hRrZGw7NYbwMfL4a2");
