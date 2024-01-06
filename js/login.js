@@ -15,18 +15,17 @@ function getAllUser() {
 }
 
 function loginUser() {
-    // let list_users = getAllUser();
-    // console.log(list_users);
-
     const userForm = document.getElementById('form-login')
+
     userForm.addEventListener('submit', function (e) {
         e.preventDefault();
         const email_user = document.getElementById('email_user');
 
-        const user = email_user.value;
+        const user = encodeURIComponent(email_user.value);
+        console.log(user);
 
         const options = {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 accept: 'application/json',
                 'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI5MGE5MTNhZC1jNDI3LTQ1ODctYWUwMC02M2VkNTBhMDNhOTYiLCJzdWIiOiJhOWU1OGI2ZS02OWZmLTQyOTYtOTM5MS0xZGRhMDQ4ZjQ3N2QiLCJpYXQiOjE3MDQ1MTIzOTJ9.dlTU8amMIRMpx3jBnMDwEnH5Rg1NQxnLLXEyur985Cc'
@@ -35,9 +34,19 @@ function loginUser() {
 
         fetch('https://api.gameshift.dev/users/' + user, options)
             .then(response => response.json())
-            .then(response => console.log(response))
-            .catch(err => console.error(err));
+            .then(response => {
+                const { referenceId, address, email } = response;
 
+                if (email === email_user.value) {
+                    alert("Thành công")
+                    window.location.href= "farm.html"
+                } else {
+                    console.log('Email không tồn tại');
+                }
+            }
+
+            )
+            .catch(err => console.error(err));
     });
 
 
