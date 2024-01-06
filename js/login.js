@@ -1,15 +1,17 @@
 
-function getDatabaseUser(callback) {
-    // fetch(apiUser).then(function (response) {
-    //     return response.json().then(callback);
-    // })
-    fetch(apiUser)
-        .then(function (response) {
-            return response.json(); // Trả về một Promise chứa dữ liệu JSON
-        })
-        .then(function (data) {
-            checkLogin(data); // Gọi hàm checkLogin với dữ liệu đã được chuyển đổi từ JSON
-        });
+function getAllUser() {
+    const options = {
+        method: "GET",
+        headers: {
+            accept: "application/json",
+            "x-api-key":
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI5MGE5MTNhZC1jNDI3LTQ1ODctYWUwMC02M2VkNTBhMDNhOTYiLCJzdWIiOiJhOWU1OGI2ZS02OWZmLTQyOTYtOTM5MS0xZGRhMDQ4ZjQ3N2QiLCJpYXQiOjE3MDQ1MTIzOTJ9.dlTU8amMIRMpx3jBnMDwEnH5Rg1NQxnLLXEyur985Cc",
+        },
+    };
+
+    return fetch("https://api.gameshift.dev/users", options)
+        .then((response) => response.json())
+        .catch((err) => console.error(err));
 }
 
 function checkLogin(data) {
@@ -43,26 +45,28 @@ function loginUser() {
     // console.log(list_users);
 
     const userForm = document.getElementById('form-login')
-    userForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        const email_user = document.getElementById('email_user');
-
-        const user = email_user.value;
-
-        const options = {
-            method: 'POST',
-            headers: {
-                accept: 'application/json',
-                'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI5MGE5MTNhZC1jNDI3LTQ1ODctYWUwMC02M2VkNTBhMDNhOTYiLCJzdWIiOiJhOWU1OGI2ZS02OWZmLTQyOTYtOTM5MS0xZGRhMDQ4ZjQ3N2QiLCJpYXQiOjE3MDQ1MTIzOTJ9.dlTU8amMIRMpx3jBnMDwEnH5Rg1NQxnLLXEyur985Cc'
-            }
-        };
-
-        fetch('https://api.gameshift.dev/users/' + user, options)
-            .then(response => response.json())
-            .then(response => console.log(response))
-            .catch(err => console.error(err));
-
-    });
+    if(userForm) {
+        userForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email_user = document.getElementById('email_user');
+    
+            const user = email_user.value;
+    
+            const options = {
+                method: 'POST',
+                headers: {
+                    accept: 'application/json',
+                    'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI5MGE5MTNhZC1jNDI3LTQ1ODctYWUwMC02M2VkNTBhMDNhOTYiLCJzdWIiOiJhOWU1OGI2ZS02OWZmLTQyOTYtOTM5MS0xZGRhMDQ4ZjQ3N2QiLCJpYXQiOjE3MDQ1MTIzOTJ9.dlTU8amMIRMpx3jBnMDwEnH5Rg1NQxnLLXEyur985Cc'
+                }
+            };
+    
+            fetch('https://api.gameshift.dev/users/' + user, options)
+                .then(response => response.json())
+                .then(response => console.log(response))
+                .catch(err => console.error(err));
+    
+        });
+    }
 
 
 }
