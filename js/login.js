@@ -1,8 +1,3 @@
-const apiUser = "http://localhost:3000/user";
-console.log(apiUser);
-function login() {
-    getDatabaseUser(checkLogin);
-}
 
 function getDatabaseUser(callback) {
     // fetch(apiUser).then(function (response) {
@@ -43,31 +38,75 @@ function signup() {
     createFrom();
 }
 
-function createUser(data) {
-    fetch(apiUser, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data), 
-    }).then(function (response) {
-        return response.json();
-    })
+function loginUser() {
+    // let list_users = getAllUser();
+    // console.log(list_users);
 
-    if(data) {
-        alert('Đăng ký thành công');
-        window.location.href = "login.html";
+    const userForm = document.getElementById('form-login')
+    userForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const email_user = document.getElementById('email_user');
+
+        const user = email_user.value;
+
+        const options = {
+            method: 'POST',
+            headers: {
+                accept: 'application/json',
+                'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI5MGE5MTNhZC1jNDI3LTQ1ODctYWUwMC02M2VkNTBhMDNhOTYiLCJzdWIiOiJhOWU1OGI2ZS02OWZmLTQyOTYtOTM5MS0xZGRhMDQ4ZjQ3N2QiLCJpYXQiOjE3MDQ1MTIzOTJ9.dlTU8amMIRMpx3jBnMDwEnH5Rg1NQxnLLXEyur985Cc'
+            }
+        };
+
+        fetch('https://api.gameshift.dev/users/' + user, options)
+            .then(response => response.json())
+            .then(response => console.log(response))
+            .catch(err => console.error(err));
+
+    });
+
+
+}
+
+
+// Đăng kí
+function create_user() {
+    const userForm = document.getElementById('userForm')
+    if (userForm) {
+        userForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const emailInput = document.getElementById('username');
+            console.log(emailInput.value);
+            const user = {
+                referenceId: emailInput.value,
+                email: emailInput.value
+            }
+
+            const newUsers = {
+                method: 'GET',
+                headers: {
+                    accept: 'application/json',
+                    'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI5MGE5MTNhZC1jNDI3LTQ1ODctYWUwMC02M2VkNTBhMDNhOTYiLCJzdWIiOiJhOWU1OGI2ZS02OWZmLTQyOTYtOTM5MS0xZGRhMDQ4ZjQ3N2QiLCJpYXQiOjE3MDQ1MTIzOTJ9.dlTU8amMIRMpx3jBnMDwEnH5Rg1NQxnLLXEyur985Cc',
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            };
+
+            fetch('https://api.gameshift.dev/users', newUsers)
+                .then(response => response.json())
+                .then(response => console.log(response))
+                .catch(err => console.error(err));
+        });
     }
 }
 
-function createFrom() {
-    const usernameInput = document.getElementById('username');
-    const passwordInput = document.getElementById('password');
-    
-    const user = {
-        username : usernameInput.value,
-        password : passwordInput.value
-    };
 
-    createUser(user);
+async function main() {
+    let Alluser = await getAllUser();
+    
+    // console.log(Alluser);
+
+    create_user()
+    loginUser()
+
 }
+main();

@@ -31,7 +31,11 @@
       "id": 6
     },
     {
+<<<<<<< HEAD
       "username": "vanhvanh@gmail.com",
+=======
+      "username": "nhat@gmail.com",
+>>>>>>> 522972f5f13b3934060e3756784b65510147c7cd
       "password": "111111",
       "id": 7
     }

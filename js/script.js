@@ -1,14 +1,3 @@
-//GameSounds
-function playHarvestSound() {
-  var audio = document.getElementById("harvestSound");
-  audio.play();
-}
-
-function playPlantSound() {
-  var audio = document.getElementById("plantSound");
-  audio.play();
-}
-
 //RESET LOCAL STORAGE
 $(document).on("click", "#resetAll", function () {
   localStorage.clear();
@@ -150,22 +139,6 @@ cropChooserWrapper
   .html("Profit: $" + ProfitT3);
 
 //CREATE SAVED PLOTS
-function spawnSavedPlots() {
-  var reqPlotsForSpawn = NumPlots; //get number of plots minus 1
-  if (reqPlotsForSpawn >= 1 && NumPlots <= 16) {
-    //if 1 or more AND less than 16 then spawn purchased plots
-    //console.log("you have enough plots to spawn");
-    plot.remove();
-    tutorialFloaty.hide(); //hide tutorial if player has already played the game
-    for (var i = 0; i < NumPlots; i++) {
-      plotWrapper.append(spawnSavedPlot); //add the plots the user owns
-      //console.log("1 plot appended");
-    }
-  } else {
-    //console.log("NOTHING was spawned");
-  }
-  //plotWrapper.append(spawnNewPlot);
-}
 spawnSavedPlots();
 makePlotAvailable();
 //END CREATE SAVED PLOTS
@@ -227,6 +200,104 @@ $(document).on("click", ".plotBox", function (event) {
   }
 });
 
+
+//PLANT SEED NEW
+cropChooserOptions.click(function () {
+  var cropType = "";
+  cropType = $(this)
+    .attr("class")
+    .split(" ")
+    .pop();
+  console.log("crop type is " + cropType);
+  //Add seed type to parent when planting seed for first time
+  currentPlot.addClass(cropType);
+  //Get cost of Crop based on type
+  var cropCostLocal = checkCropCost(cropType);
+  //console.log("this crop will cost you $" + cropCostLocal);
+  //Actually plant the seed
+  plantSeed(currentPlot, cropType, cropCostLocal);
+});
+
+//Click on yes or no option to purchase plot
+ConfirmWrapperOptions.click(function () {
+  //console.log($(this));
+  if ($(this).hasClass("yes")) {
+    convertPlot(currentPlot);
+    makePlotAvailable();
+    hideConfirmMenu();
+  } else if ($(this).hasClass("no")) {
+    hideConfirmMenu();
+  } else {
+  }
+});
+
+//Trigger Coop Buy Option
+coopBuyOption.click(function () {
+  showCoopMenu();
+});
+
+//Buy The Coop
+coopBuyOptions.click(function () {
+  if ($(this).hasClass("yes")) {
+    buyTheCoop();
+    hideCoopMenu();
+  } else if ($(this).hasClass("no")) {
+    hideCoopMenu();
+  } else {
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//FUNCTIONS
+
+//GameSounds
+function playHarvestSound() {
+  var audio = document.getElementById("harvestSound");
+  audio.play();
+}
+
+function playPlantSound() {
+  var audio = document.getElementById("plantSound");
+  audio.play();
+}
+
+function spawnSavedPlots() {
+  var reqPlotsForSpawn = NumPlots; //get number of plots minus 1
+  if (reqPlotsForSpawn >= 1 && NumPlots <= 16) {
+    //if 1 or more AND less than 16 then spawn purchased plots
+    //console.log("you have enough plots to spawn");
+    plot.remove();
+    tutorialFloaty.hide(); //hide tutorial if player has already played the game
+    for (var i = 0; i < NumPlots; i++) {
+      plotWrapper.append(spawnSavedPlot); //add the plots the user owns
+      //console.log("1 plot appended");
+    }
+  } else {
+    //console.log("NOTHING was spawned");
+  }
+  //plotWrapper.append(spawnNewPlot);
+}
+
 function checkCropType(plotInfo) {
   var cropType = "";
   if (plotInfo.hasClass("corn")) {
@@ -281,36 +352,6 @@ function checkCropTimerLimit(plotType) {
     //do nothing
   }
 }
-
-//PLANT SEED NEW
-cropChooserOptions.click(function () {
-  var cropType = "";
-  cropType = $(this)
-    .attr("class")
-    .split(" ")
-    .pop();
-  console.log("crop type is " + cropType);
-  //Add seed type to parent when planting seed for first time
-  currentPlot.addClass(cropType);
-  //Get cost of Crop based on type
-  var cropCostLocal = checkCropCost(cropType);
-  //console.log("this crop will cost you $" + cropCostLocal);
-  //Actually plant the seed
-  plantSeed(currentPlot, cropType, cropCostLocal);
-});
-
-//Click on yes or no option to purchase plot
-ConfirmWrapperOptions.click(function () {
-  //console.log($(this));
-  if ($(this).hasClass("yes")) {
-    convertPlot(currentPlot);
-    makePlotAvailable();
-    hideConfirmMenu();
-  } else if ($(this).hasClass("no")) {
-    hideConfirmMenu();
-  } else {
-  }
-});
 
 //Function that plants the seed after getting and setting variables
 function plantSeed(plotInfo, plotType, cropCost) {
@@ -493,6 +534,15 @@ function hideSeedSelectionMenu() {
 }
 
 function showConfirmMenu() {
+  // Đăng kí or đăng nhập
+  window.location.href = "./signup.html"
+
+
+
+
+
+
+
   ConfirmWrapper.addClass("show");
 }
 
@@ -521,22 +571,6 @@ function showCoopMenu() {
 function hideCoopMenu() {
   CoopExpansionWrapper.removeClass("show");
 }
-
-//Trigger Coop Buy Option
-coopBuyOption.click(function () {
-  showCoopMenu();
-});
-
-//Buy The Coop
-coopBuyOptions.click(function () {
-  if ($(this).hasClass("yes")) {
-    buyTheCoop();
-    hideCoopMenu();
-  } else if ($(this).hasClass("no")) {
-    hideCoopMenu();
-  } else {
-  }
-});
 
 function buyTheCoop() {
   if (Money >= 10) {
