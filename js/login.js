@@ -1,5 +1,3 @@
-
-
 function getAllUser() {
     const options = {
         method: "GET",
@@ -125,6 +123,10 @@ function createPlotItem(referenceId) {
     return fetch("https://api.gameshift.dev/assets", options)
         .then((response) => response.json())
         .catch((err) => console.error(err));
+}
+
+function coinItem() {
+    
 }
 
 
