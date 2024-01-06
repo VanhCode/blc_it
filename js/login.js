@@ -82,11 +82,11 @@ function create_user() {
                 .then(response => response.json())
                 .then(response => {
                     if (response.statusCode > 0) {
-                        alert("Đăng kí thành công");
-                        window.location.href = "login.html";
-                    } else {
                         alert("Tài khoản đã tồn tại");
                         window.location.href = "signup.html";
+                    } else {
+                        alert("Đăng kí thành công");
+                        window.location.href = "login.html";
                     }
                 })
                 .catch(err => console.error(err));
@@ -132,7 +132,6 @@ async function main() {
 
     create_user()
     loginUser()
-
 
 }
 main();
