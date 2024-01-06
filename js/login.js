@@ -1,73 +1,127 @@
-const apiUser = "http://localhost:3000/user";
-console.log(apiUser);
-function login() {
-    getDatabaseUser(checkLogin);
-}
+// const apiUser = "http://localhost:3000/user";
+// console.log(apiUser);
+// function login() {
+//     getDatabaseUser(checkLogin);
+// }
 
-function getDatabaseUser(callback) {
-    // fetch(apiUser).then(function (response) {
-    //     return response.json().then(callback);
-    // })
-    fetch(apiUser)
-        .then(function (response) {
-            return response.json(); // Trả về một Promise chứa dữ liệu JSON
-        })
-        .then(function (data) {
-            checkLogin(data); // Gọi hàm checkLogin với dữ liệu đã được chuyển đổi từ JSON
-        });
-}
+// function getDatabaseUser(callback) {
+//     // fetch(apiUser).then(function (response) {
+//     //     return response.json().then(callback);
+//     // })
+//     fetch(apiUser)
+//         .then(function (response) {
+//             return response.json(); // Trả về một Promise chứa dữ liệu JSON
+//         })
+//         .then(function (data) {
+//             checkLogin(data); // Gọi hàm checkLogin với dữ liệu đã được chuyển đổi từ JSON
+//         });
+// }
 
-function checkLogin(data) {
-    const usernameInput = document.getElementById('username').value;
-    const passwordInput = document.getElementById('password').value;
+// function checkLogin(data) {
+//     const usernameInput = document.getElementById('username').value;
+//     const passwordInput = document.getElementById('password').value;
 
-    let found = false;
+//     let found = false;
 
-    data.forEach((data) => {
-        if (data.username == usernameInput && data.password == passwordInput) {
-            alert('Đăng nhập thành công');
-            window.location.href = "farm.html";
-            found = true; 
-        }
-    });
+//     data.forEach((data) => {
+//         if (data.username == usernameInput && data.password == passwordInput) {
+//             alert('Đăng nhập thành công');
+//             window.location.href = "farm.html";
+//             found = true; 
+//         }
+//     });
 
-    if (!found) {
-        alert('Tài khoản hoặc mật khẩu của bạn không đúng');
-        window.location.href = "login.html";
-    }
-}
+//     if (!found) {
+//         alert('Tài khoản hoặc mật khẩu của bạn không đúng');
+//         window.location.href = "login.html";
+//     }
+// }
 
 
 
-function signup() {
-    createFrom();
-}
+// function signup() {
+//     createFrom();
+// }
 
-function createUser(data) {
-    fetch(apiUser, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data), 
-    }).then(function (response) {
-        return response.json();
-    })
+// function createUser(data) {
+//     fetch(apiUser, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(data), 
+//     }).then(function (response) {
+//         return response.json();
+//     })
 
-    if(data) {
-        alert('Đăng ký thành công');
-        window.location.href = "login.html";
-    }
-}
+//     if(data) {
+//         alert('Đăng ký thành công');
+//         window.location.href = "signup.html";
+//     }
+// }
 
-function createFrom() {
-    const usernameInput = document.getElementById('username');
-    const passwordInput = document.getElementById('password');
-    
-    const user = {
-        username : usernameInput.value,
-        password : passwordInput.value
-    };
+// function createFrom() {
+//     const usernameInput = document.getElementById('username');
+//     const passwordInput = document.getElementById('password');
 
-    createUser(user);
-}
+//     const user = {
+//         username : usernameInput.value,
+//         password : passwordInput.value
+//     };
+
+//     createUser(user);
+// }
+
+
+// function createFrom() {
+//     const usernameInput = document.getElementById('username');
+//     const passwordInput = document.getElementById('password');
+
+//     const user = {
+//         username: usernameInput.value,
+//         password: passwordInput.value
+//     };
+// }
+
+// const newUsers = {
+//     method: 'POST',
+//     headers: {
+//         accept: 'application/json',
+//         'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI2YmY0NjU2Yy0wY2Q1LTRiNTgtYTJiMy05NDMyOTM2Yjg2YmMiLCJzdWIiOiI1YTk5NjEzZi0wNjUwLTQ5MTgtYmYxYy1iMGViMzc4OTU3N2QiLCJpYXQiOjE3MDQ1MTEzMDl9.oDbn6dEHLnrkstptlVgCES0Ey17xHcgBDRIJQehCvho',
+//         'content-type': 'application/json'
+//     },
+//     body: JSON.stringify({ referenceId: '1', email: 'tranvanh2k4@gmail.com' })
+// };
+
+// fetch('https://api.gameshift.dev/users', newUsers)
+//     .then(response => response.json())
+//     .then(response => console.log(response))
+//     .catch(err => console.error(err));
+
+
+document.getElementById('userForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const emailInput = document.getElementById('username');
+    console.log(emailInput);
+
+
+    // const user = {
+    //     username: emailInput.value
+    // };
+
+    // const newUsers = {
+    //     method: 'POST',
+    //     headers: {
+    //         accept: 'application/json',
+    //         'x-api-key': 'your_api_key',
+    //         'content-type': 'application/json'
+    //     },
+    //     body: JSON.stringify(user[username])
+    // };
+
+    // fetch('https://api.gameshift.dev/users', newUsers)
+    //     .then(response => response.json())
+    //     .then(response => console.log(response))
+    //     .catch(err => console.error(err));
+});
