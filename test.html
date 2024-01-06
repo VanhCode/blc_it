@@ -62,7 +62,10 @@
         .then((response) => response.json())
         .catch((err) => console.error(err));
     }
-    function editPlotItem(idNFT,plot_status){
+
+
+
+    function editPlotItem(idNFT,plot_status='null'){
       const options = {
         method: 'PUT',
         headers: {
@@ -79,7 +82,8 @@
     }
 
     async function main() {
-      getAccessByReferenceId("thanhdat32805@gmail.com");
+      console.log(getAccessByReferenceId("chuabaogioduocdi@gmail.com"));
+
     }
     main();
   </script>
