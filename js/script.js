@@ -65,7 +65,6 @@ $(".plotBoxSaved").remove();
 var spawnNewPlot = $("<div />")
   .append($(".plotBox").clone())
   .html();
-
 //LOCAL STORAGE VARIABLES
 //NUMBER OF PRE-PURCHASED PLOTS
 // var NumPlotsFromStorage = localStorage.getItem("NumPlots");
@@ -112,7 +111,7 @@ if (CoopFromStorage == null || CoopFromStorage == "NaN") {
 async function main() {
   const PlotOfUser= await getAccessByReferenceId(email);
     console.log(PlotOfUser);
-    NumPlots=PlotOfUser.length;
+    NumPlots=PlotOfUser;
   //RESET LOCAL STORAGE
 $(document).on("click", "#resetAll", function () {
   localStorage.clear();
@@ -246,7 +245,7 @@ cropChooserOptions.click(function () {
   plantSeed(currentPlot, cropType, cropCostLocal);
 });
 
-//Click on yes or no option to purchase plot
+//Click on ye or no option to purchase plot
 ConfirmWrapperOptions.click(function () {
   //console.log($(this));
   if ($(this).hasClass("yes")) {
@@ -308,15 +307,15 @@ function playPlantSound() {
 }
 
 async function spawnSavedPlots() {
-  var reqPlotsForSpawn = NumPlots; //get number of plots minus 1
-  if (reqPlotsForSpawn >= 1 && NumPlots <= 16) {
+  var reqPlotsForSpawn = NumPlots.length; //get number of plots minus 1
+  if (reqPlotsForSpawn >= 1 && NumPlots.length <= 16) {
     //if 1 or more AND less than 16 then spawn purchased plots
     //console.log("you have enough plots to spawn");
 
     plot.remove();
     tutorialFloaty.hide(); //hide tutorial if player has already played the game
     
-    for (var i = 0; i < NumPlots; i++) {
+    for (var i = 0; i < NumPlots.length; i++) {
       plotWrapper.append(spawnSavedPlot); //add the plots the user owns
       //console.log("1 plot appended");
     }
