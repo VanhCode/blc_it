@@ -1,15 +1,26 @@
+function getAllAccess() {
+  const options = {
+    method: "GET",
+    headers: {
+      accept: "application/json",
+      "x-api-key": API_KEY,
+    },
+  };
 
-
-
-
-//RESET LOCAL STORAGE
-$(document).on("click", "#resetAll", function () {
-  localStorage.clear();
-  console.log("All LocalStorage Items Clear");
-});
-//END RESET LOCAL STORAGE
-
-//Set Game Variables
+  return fetch("https://api.gameshift.dev/assets", options)
+    .then((response) => response.json())
+    .catch((err) => console.error(err));
+}
+async function getAccessByReferenceId(referenceId) {
+  let allAcess = await getAllAccess();
+  let accessByReferenceId = allAcess.data.filter(
+    (item) => item.owner.referenceId == referenceId
+  );
+  return accessByReferenceId;
+}
+const email = localStorage.getItem("userEmail");
+const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI2YmY0NjU2Yy0wY2Q1LTRiNTgtYTJiMy05NDMyOTM2Yjg2YmMiLCJzdWIiOiI1YTk5NjEzZi0wNjUwLTQ5MTgtYmYxYy1iMGViMzc4OTU3N2QiLCJpYXQiOjE3MDQ1MTEzMDl9.oDbn6dEHLnrkstptlVgCES0Ey17xHcgBDRIJQehCvho";
+console.log(email);
 var NumPlots = 0; //a reset for the number of plots a user has
 var Money = 10000000000; //the amount of money to start
 var PlotCost = 100; //Cost of a Plot of land
@@ -57,15 +68,15 @@ var spawnNewPlot = $("<div />")
 
 //LOCAL STORAGE VARIABLES
 //NUMBER OF PRE-PURCHASED PLOTS
-var NumPlotsFromStorage = localStorage.getItem("NumPlots");
-if (NumPlotsFromStorage == null || NumPlotsFromStorage == "NaN") {
-  //if no saved plots then reset to variable
-  NumPlots = NumPlots;
-} else {
-  //otherwise set the number to what is in storage
-  NumPlots = parseInt(NumPlotsFromStorage);
-}
-console.log("you have " + NumPlots + " purchased plots");
+// var NumPlotsFromStorage = localStorage.getItem("NumPlots");
+// if (NumPlotsFromStorage == null || NumPlotsFromStorage == "NaN") {
+//   //if no saved plots then reset to variable
+//   NumPlots = NumPlots;
+// } else {
+//   //otherwise set the number to what is in storage
+//   NumPlots = parseInt(NumPlotsFromStorage);
+// }
+// console.log("you have " + NumPlots + " purchased plots");
 
 //AMOUNT OF MONEY
 var MoneyFromStorage = localStorage.getItem("NumMoney");
@@ -98,6 +109,19 @@ if (CoopFromStorage == null || CoopFromStorage == "NaN") {
 } else if (CoopFromStorage == "false") {
   console.log("you don't own the coop!");
 }
+async function main() {
+  const PlotOfUser= await getAccessByReferenceId(email);
+    console.log(PlotOfUser);
+    NumPlots=PlotOfUser.length;
+  //RESET LOCAL STORAGE
+$(document).on("click", "#resetAll", function () {
+  localStorage.clear();
+  console.log("All LocalStorage Items Clear");
+});
+//END RESET LOCAL STORAGE
+
+//Set Game Variables
+
 
 //SET STUFF
 $("#moneyBox").html(Money);
@@ -250,10 +274,8 @@ coopBuyOptions.click(function () {
   } else {
   }
 });
-
-
-
-
+}
+main();
 
 
 
@@ -285,13 +307,15 @@ function playPlantSound() {
   audio.play();
 }
 
-function spawnSavedPlots() {
+async function spawnSavedPlots() {
   var reqPlotsForSpawn = NumPlots; //get number of plots minus 1
   if (reqPlotsForSpawn >= 1 && NumPlots <= 16) {
     //if 1 or more AND less than 16 then spawn purchased plots
     //console.log("you have enough plots to spawn");
+
     plot.remove();
     tutorialFloaty.hide(); //hide tutorial if player has already played the game
+    
     for (var i = 0; i < NumPlots; i++) {
       plotWrapper.append(spawnSavedPlot); //add the plots the user owns
       //console.log("1 plot appended");

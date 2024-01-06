@@ -4,7 +4,7 @@ function getAllUser() {
         headers: {
             accept: "application/json",
             "x-api-key":
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI5MGE5MTNhZC1jNDI3LTQ1ODctYWUwMC02M2VkNTBhMDNhOTYiLCJzdWIiOiJhOWU1OGI2ZS02OWZmLTQyOTYtOTM5MS0xZGRhMDQ4ZjQ3N2QiLCJpYXQiOjE3MDQ1MTIzOTJ9.dlTU8amMIRMpx3jBnMDwEnH5Rg1NQxnLLXEyur985Cc",
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI2YmY0NjU2Yy0wY2Q1LTRiNTgtYTJiMy05NDMyOTM2Yjg2YmMiLCJzdWIiOiI1YTk5NjEzZi0wNjUwLTQ5MTgtYmYxYy1iMGViMzc4OTU3N2QiLCJpYXQiOjE3MDQ1MTEzMDl9.oDbn6dEHLnrkstptlVgCES0Ey17xHcgBDRIJQehCvho",
         },
     };
 
@@ -28,7 +28,7 @@ function loginUser() {
                 method: 'GET',
                 headers: {
                     accept: 'application/json',
-                    'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI5MGE5MTNhZC1jNDI3LTQ1ODctYWUwMC02M2VkNTBhMDNhOTYiLCJzdWIiOiJhOWU1OGI2ZS02OWZmLTQyOTYtOTM5MS0xZGRhMDQ4ZjQ3N2QiLCJpYXQiOjE3MDQ1MTIzOTJ9.dlTU8amMIRMpx3jBnMDwEnH5Rg1NQxnLLXEyur985Cc'
+                    'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI2YmY0NjU2Yy0wY2Q1LTRiNTgtYTJiMy05NDMyOTM2Yjg2YmMiLCJzdWIiOiI1YTk5NjEzZi0wNjUwLTQ5MTgtYmYxYy1iMGViMzc4OTU3N2QiLCJpYXQiOjE3MDQ1MTEzMDl9.oDbn6dEHLnrkstptlVgCES0Ey17xHcgBDRIJQehCvho'
                 }
             };
 
@@ -42,6 +42,7 @@ function loginUser() {
                         console.log(localStorage);
                         alert("Đăng nhập thành công");
                         window.location.href = "farm.html"
+
                     } else {
                         alert("Email không tồn tại");
                     }
@@ -71,7 +72,7 @@ function create_user() {
                 method: 'POST',
                 headers: {
                     accept: 'application/json',
-                    'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI5MGE5MTNhZC1jNDI3LTQ1ODctYWUwMC02M2VkNTBhMDNhOTYiLCJzdWIiOiJhOWU1OGI2ZS02OWZmLTQyOTYtOTM5MS0xZGRhMDQ4ZjQ3N2QiLCJpYXQiOjE3MDQ1MTIzOTJ9.dlTU8amMIRMpx3jBnMDwEnH5Rg1NQxnLLXEyur985Cc',
+                    'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI2YmY0NjU2Yy0wY2Q1LTRiNTgtYTJiMy05NDMyOTM2Yjg2YmMiLCJzdWIiOiI1YTk5NjEzZi0wNjUwLTQ5MTgtYmYxYy1iMGViMzc4OTU3N2QiLCJpYXQiOjE3MDQ1MTEzMDl9.oDbn6dEHLnrkstptlVgCES0Ey17xHcgBDRIJQehCvho',
                     'content-type': 'application/json'
                 },
                 body: JSON.stringify(user)
@@ -80,7 +81,7 @@ function create_user() {
             fetch('https://api.gameshift.dev/users', newUsers)
                 .then(response => response.json())
                 .then(response => {
-                    if (response.statusCode === 200) {
+                    if (response.statusCode > 0) {
                         alert("Đăng kí thành công");
                         window.location.href = "login.html";
                     } else {
@@ -93,6 +94,36 @@ function create_user() {
     }
 }
 
+function createPlotItem(referenceId) {
+    const options = {
+        method: "POST",
+        headers: {
+            accept: "application/json",
+            "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI2YmY0NjU2Yy0wY2Q1LTRiNTgtYTJiMy05NDMyOTM2Yjg2YmMiLCJzdWIiOiI1YTk5NjEzZi0wNjUwLTQ5MTgtYmYxYy1iMGViMzc4OTU3N2QiLCJpYXQiOjE3MDQ1MTEzMDl9.oDbn6dEHLnrkstptlVgCES0Ey17xHcgBDRIJQehCvho",
+            "content-type": "application/json",
+        },
+        body: JSON.stringify({
+            details: {
+                attributes: [
+                    {
+                        traitType: "plot_status",
+                        value: "null",
+                    },
+                ],
+                description: "plot",
+                imageUrl:
+                    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjc7Ah4Ol_cLTqt-78GEtWfvPv3PuqYZ-8CgBHTWyyy-zUf-AiuAxJ_H7YhyOffejL5wCSW_HxCRiZO0HWPC3lrV1iSXVH7mBrbrOKuT-ExZg5q-ty6XeVDuW5VamiI3vACg0Wp3bx3skhSOiZtZdHUgHd090NKNp2gaBhAf9re-kIEuOMz0bafpK3GLTE/s1600/dat.png",
+                name: "plot",
+            },
+            destinationUserReferenceId: referenceId,
+        }),
+    };
+
+    return fetch("https://api.gameshift.dev/assets", options)
+        .then((response) => response.json())
+        .catch((err) => console.error(err));
+}
+
 
 async function main() {
     let Alluser = await getAllUser();
@@ -101,6 +132,7 @@ async function main() {
 
     create_user()
     loginUser()
+
 
 }
 main();
