@@ -68,15 +68,15 @@ var spawnNewPlot = $("<div />")
 
 //LOCAL STORAGE VARIABLES
 //NUMBER OF PRE-PURCHASED PLOTS
-var NumPlotsFromStorage = localStorage.getItem("NumPlots");
-if (NumPlotsFromStorage == null || NumPlotsFromStorage == "NaN") {
-  //if no saved plots then reset to variable
-  NumPlots = NumPlots;
-} else {
-  //otherwise set the number to what is in storage
-  NumPlots = parseInt(NumPlotsFromStorage);
-}
-console.log("you have " + NumPlots + " purchased plots");
+// var NumPlotsFromStorage = localStorage.getItem("NumPlots");
+// if (NumPlotsFromStorage == null || NumPlotsFromStorage == "NaN") {
+//   //if no saved plots then reset to variable
+//   NumPlots = NumPlots;
+// } else {
+//   //otherwise set the number to what is in storage
+//   NumPlots = parseInt(NumPlotsFromStorage);
+// }
+// console.log("you have " + NumPlots + " purchased plots");
 
 //AMOUNT OF MONEY
 var MoneyFromStorage = localStorage.getItem("NumMoney");
@@ -109,7 +109,10 @@ if (CoopFromStorage == null || CoopFromStorage == "NaN") {
 } else if (CoopFromStorage == "false") {
   console.log("you don't own the coop!");
 }
-function main() {
+async function main() {
+  const PlotOfUser= await getAccessByReferenceId(email);
+    console.log(PlotOfUser);
+    NumPlots=PlotOfUser.length;
   //RESET LOCAL STORAGE
 $(document).on("click", "#resetAll", function () {
   localStorage.clear();
@@ -312,9 +315,8 @@ async function spawnSavedPlots() {
 
     plot.remove();
     tutorialFloaty.hide(); //hide tutorial if player has already played the game
-    const PlotOfUser= await getAccessByReferenceId(email);
-    console.log(PlotOfUser);
-    for (var i = 0; i < PlotOfUser.length; i++) {
+    
+    for (var i = 0; i < NumPlots; i++) {
       plotWrapper.append(spawnSavedPlot); //add the plots the user owns
       //console.log("1 plot appended");
     }
