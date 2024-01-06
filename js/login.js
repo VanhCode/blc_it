@@ -138,10 +138,13 @@ async function main() {
 main();
 
 const btnLogout = document.querySelector('#logout')
-
 if (btnLogout) {
     btnLogout.addEventListener('click', function () {
-        logout();
+        const isConfirmed = window.confirm('Bạn có chắc muốn đăng xuất?');
+
+        if (isConfirmed) {
+            logout();
+        }
     })
 }
 
@@ -149,6 +152,5 @@ function logout() {
     localStorage.clear();
     window.location.href = 'login.html';
 }
-
 
 console.log(localStorage);

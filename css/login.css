@@ -8,6 +8,9 @@
   padding: 0;
   font: inherit;
 }
+
+
+
 img,
 picture,
 svg,
@@ -18,22 +21,33 @@ video {
 body {
   min-height: 100vh;
   font-family: "Roboto", sans-serif;
+  background-color: #92c96c;
 }
+
+
+body {
+  /* background-color: #92c96c; */
+  background: url('../images/bgfarm.jpg') no-repeat;
+  background-size: cover;
+  /* background-position-y: -210px; */
+  
+}
+
 /* style login */
 .login {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: #f5f5f5;
 }
 .login__container {
   width: 100%;
   max-width: 400px;
   padding: 20px;
-  background: #fff;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background: #92c96c;
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.5);
 }
 .login__container h1 {
   margin-bottom: 20px;
@@ -58,13 +72,13 @@ body {
   padding: 10px;
   border: none;
   border-radius: 5px;
-  background: #333;
+  background: #d19812;
   color: #fff;
   font-size: 1.2rem;
   cursor: pointer;
 }
 .login__container form button:hover {
-  background: #555;
+  background: #b28110b6;
 }
 .login__container form a {
   text-align: center;
@@ -91,15 +105,16 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: #f5f5f5;
+  box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.5);
 }
 .signup__container {
   width: 100%;
   max-width: 400px;
   padding: 20px;
   background: #fff;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.5);
+
 }
 .signup__container h1 {
   margin-bottom: 20px;
@@ -150,4 +165,21 @@ body {
   font-size: 1.2rem;
   cursor: pointer;
   display: block;
+}
+
+.login__container {
+  background: url('https://i.imgur.com/0XbDbXt.png') no-repeat center center;
+}
+
+h5 {
+  margin-bottom: 8px;
+}
+
+.login__registerButton {
+  text-decoration: none;
+}
+
+#email_user,
+#username {
+  outline: none;
 }
