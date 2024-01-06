@@ -1,3 +1,7 @@
+
+
+
+
 //RESET LOCAL STORAGE
 $(document).on("click", "#resetAll", function () {
   localStorage.clear();
@@ -534,15 +538,6 @@ function hideSeedSelectionMenu() {
 }
 
 function showConfirmMenu() {
-  // Đăng kí or đăng nhập
-  window.location.href = "./signup.html"
-
-
-
-
-
-
-
   ConfirmWrapper.addClass("show");
 }
 

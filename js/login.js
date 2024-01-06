@@ -41,9 +41,6 @@ function signup() {
 }
 
 function loginUser() {
-    // let list_users = getAllUser();
-    // console.log(list_users);
-
     const userForm = document.getElementById('form-login')
     if(userForm) {
         userForm.addEventListener('submit', function (e) {
@@ -67,7 +64,6 @@ function loginUser() {
     
         });
     }
-
 
 }
 
