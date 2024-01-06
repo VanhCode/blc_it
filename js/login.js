@@ -40,7 +40,7 @@ function loginUser() {
                     if (email === email_user.value) {
                         localStorage.setItem('userEmail', email_user.value);
                         console.log(localStorage);
-                        alert("Thành công");
+                        alert("Đăng nhập thành công");
                         window.location.href = "farm.html"
 
                     } else {
@@ -80,13 +80,13 @@ function create_user() {
 
             fetch('https://api.gameshift.dev/users', newUsers)
                 .then(response => response.json())
-                .then(async response => {
-                    if (response.message) {
-                        alert("Tài khoản đã tồn tại");
-                    } else {
-                        alert("Tạo tài khoản thành công")
-                        await createPlotItem(response.referenceId);
+                .then(response => {
+                    if (response.statusCode > 0) {
+                        alert("Đăng kí thành công");
                         window.location.href = "login.html";
+                    } else {
+                        alert("Tài khoản đã tồn tại");
+                        window.location.href = "signup.html";
                     }
                 })
                 .catch(err => console.error(err));
@@ -137,12 +137,18 @@ async function main() {
 }
 main();
 
-// const btnLogout = document.querySelector('#logout')
+const btnLogout = document.querySelector('#logout')
 
-// btnLogout.addEventListener('click', function () {
-//     localStorage.clear();
-//     window.location.href = 'login.html';
-// })
+if (btnLogout) {
+    btnLogout.addEventListener('click', function () {
+        logout();
+    })
+}
+
+function logout() {
+    localStorage.clear();
+    window.location.href = 'login.html';
+}
 
 
-// console.log(localStorage);
+console.log(localStorage);
