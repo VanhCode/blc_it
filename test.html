@@ -5,26 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
   </head>
-  <body></body>
+  <body>
+    <input type="file" />
+  </body>
   <script>
-    function getAllUser() {
+    const API_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI2YmY0NjU2Yy0wY2Q1LTRiNTgtYTJiMy05NDMyOTM2Yjg2YmMiLCJzdWIiOiI1YTk5NjEzZi0wNjUwLTQ5MTgtYmYxYy1iMGViMzc4OTU3N2QiLCJpYXQiOjE3MDQ1MTEzMDl9.oDbn6dEHLnrkstptlVgCES0Ey17xHcgBDRIJQehCvho";
+    function getAllAccess() {
       const options = {
         method: "GET",
         headers: {
           accept: "application/json",
-          "x-api-key":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI2YmY0NjU2Yy0wY2Q1LTRiNTgtYTJiMy05NDMyOTM2Yjg2YmMiLCJzdWIiOiI1YTk5NjEzZi0wNjUwLTQ5MTgtYmYxYy1iMGViMzc4OTU3N2QiLCJpYXQiOjE3MDQ1MTEzMDl9.oDbn6dEHLnrkstptlVgCES0Ey17xHcgBDRIJQehCvho",
+          "x-api-key": API_KEY,
         },
       };
 
-      return fetch("https://api.gameshift.dev/users", options)
+      return fetch("https://api.gameshift.dev/assets", options)
         .then((response) => response.json())
         .catch((err) => console.error(err));
     }
-    
+    async function getAccessByReferenceId(referenceId) {
+      let allAcess = await getAllAccess();
+      console.log(allAcess);
+      let accessByReferenceId = allAcess.data.filter(
+        (item) => item.owner.referenceId == referenceId
+      );
+      console.log(accessByReferenceId);
+    }
+
+    function createPlotItem(referenceId) {
+      const options = {
+        method: "POST",
+        headers: {
+          accept: "application/json",
+          "x-api-key": API_KEY,
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          details: {
+            attributes: [
+              {
+                traitType: "plot_status",
+                value: "null",
+              },
+            ],
+            description: "plot",
+            imageUrl:
+              "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjc7Ah4Ol_cLTqt-78GEtWfvPv3PuqYZ-8CgBHTWyyy-zUf-AiuAxJ_H7YhyOffejL5wCSW_HxCRiZO0HWPC3lrV1iSXVH7mBrbrOKuT-ExZg5q-ty6XeVDuW5VamiI3vACg0Wp3bx3skhSOiZtZdHUgHd090NKNp2gaBhAf9re-kIEuOMz0bafpK3GLTE/s1600/dat.png",
+            name: "plot",
+          },
+          destinationUserReferenceId: destinationUserReferenceId,
+        }),
+      };
+
+      return fetch("https://api.gameshift.dev/assets", options)
+        .then((response) => response.json())
+        .catch((err) => console.error(err));
+    }
+    function editPlotItem(idNFT,plot_status){
+      const options = {
+        method: 'PUT',
+        headers: {
+          accept: 'application/json',
+          'x-api-key': API_KEY,
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({ attributes: [{ traitType: 'plot_status', value: plot_status }] })
+      };
+
+      return fetch('https://api.gameshift.dev/assets/id', options)
+        .then(response => response.json())
+        .catch(err => console.error(err));
+    }
+
     async function main() {
-        let Alluser = await getAllUser();
-        console.log(Alluser);
+      getAccessByReferenceId("thanhdat32805@gmail.com");
     }
     main();
   </script>
