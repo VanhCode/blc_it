@@ -80,13 +80,14 @@ function create_user() {
 
             fetch('https://api.gameshift.dev/users', newUsers)
                 .then(response => response.json())
-                .then(response => {
+                .then(async response => {
                     if (response.statusCode > 0) {
-                        alert("Đăng kí thành công");
-                        window.location.href = "login.html";
-                    } else {
                         alert("Tài khoản đã tồn tại");
                         window.location.href = "signup.html";
+                    } else {
+                        await createPlotItem(emailInput.value);
+                        alert("Đăng kí thành công");
+                        window.location.href = "login.html";
                     }
                 })
                 .catch(err => console.error(err));
