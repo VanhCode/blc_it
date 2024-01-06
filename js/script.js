@@ -99,7 +99,7 @@ if (CoopFromStorage == null || CoopFromStorage == "NaN") {
   //Money = Money;
   console.log("you don't own the coop!");
 } else if (CoopFromStorage == "true") {
-  //Show the Coop
+  //Show the Coop 
   showTheCoop();
   //Start the Counter
   runTheCoop();
