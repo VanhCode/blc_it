@@ -316,7 +316,12 @@ async function spawnSavedPlots() {
     tutorialFloaty.hide(); //hide tutorial if player has already played the game
     
     for (var i = 0; i < NumPlots.length; i++) {
-      plotWrapper.append(spawnSavedPlot); //add the plots the user owns
+      let wrap=document.createElement("div");
+      wrap.innerHTML=spawnSavedPlot
+      let newPlot=wrap.querySelector('div');
+      newPlot.setAttribute('idPlot',NumPlots[i].id)
+      console.log(newPlot);
+      plotWrapper.append(newPlot); //add the plots the user owns
       //console.log("1 plot appended");
     }
   } else {
