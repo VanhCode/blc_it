@@ -29,6 +29,11 @@
       "username": "admin@gmail.com",
       "password": "111111",
       "id": 6
+    },
+    {
+      "username": "vanhvanh@gmail.com",
+      "password": "111111",
+      "id": 7
     }
   ]
 }

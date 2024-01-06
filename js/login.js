@@ -25,13 +25,13 @@ function checkLogin(data) {
 
     data.forEach((data) => {
         if (data.username == usernameInput && data.password == passwordInput) {
+            found = true; 
             alert('Đăng nhập thành công');
             window.location.href = "farm.html";
-            found = true; 
         }
     });
 
-    if (!found) {
+    if (found==false) {
         alert('Tài khoản hoặc mật khẩu của bạn không đúng');
         window.location.href = "login.html";
     }
