@@ -9,6 +9,11 @@
   <link rel="stylesheet" href="../css/login.css" />
   <!-- font roboto -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <script>
+    if (window.location.href.indexOf('login.html') === -1 && localStorage.getItem('userEmail')) {
+      window.location.href = 'farm.html';
+    }
+  </script>
 </head>
 
 <body>

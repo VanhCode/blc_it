@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nông Trại</title>
     <link rel="stylesheet" href="../css/style.css">
+    <script>
+        if (window.location.href.indexOf('login.html') === -1 && !localStorage.getItem('userEmail')) {
+            alert('Vui lòng đăng nhập');
+            window.location.href = 'login.html';
+        }
+    </script>
 </head>
 
 <body>

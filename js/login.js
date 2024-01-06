@@ -1,3 +1,5 @@
+
+
 function getAllUser() {
     const options = {
         method: "GET",
@@ -149,8 +151,9 @@ if (btnLogout) {
 }
 
 function logout() {
-    localStorage.clear();
+    localStorage.removeItem('userEmail');
     window.location.href = 'login.html';
 }
 
 console.log(localStorage);
+
