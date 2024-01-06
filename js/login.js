@@ -63,10 +63,14 @@ function loginUser() {
                 const { referenceId, address, email } = response;
 
                 if (email === email_user.value) {
-                    alert("Thành công")
-                    window.location.href = "farm.html"
+                    // Lưu email vào local storage
+                    localStorage.setItem('userEmail', email_user.value);
+                    console.log(localStorage);
+                    alert("Đăng nhập thành công");
+                    window.location.href = "farm.html";
                 } else {
-                    console.log('Email không tồn tại');
+                    // console.log('Email không tồn tại');
+                    alert("Email không tồn tại");
                 }
             }
 
@@ -96,7 +100,6 @@ function create_user() {
                     'x-api-key': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI5MGE5MTNhZC1jNDI3LTQ1ODctYWUwMC02M2VkNTBhMDNhOTYiLCJzdWIiOiJhOWU1OGI2ZS02OWZmLTQyOTYtOTM5MS0xZGRhMDQ4ZjQ3N2QiLCJpYXQiOjE3MDQ1MTIzOTJ9.dlTU8amMIRMpx3jBnMDwEnH5Rg1NQxnLLXEyur985Cc',
                     'content-type': 'application/json'
                 },
-                body: JSON.stringify(user)
             };
 
             fetch('https://api.gameshift.dev/users', newUsers)
@@ -118,3 +121,5 @@ async function main() {
 
 }
 main();
+
+console.log(localStorage);
