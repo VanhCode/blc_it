@@ -495,7 +495,7 @@ function hideSeedSelectionMenu() {
 function showConfirmMenu() {
   // Đăng kí or đăng nhập
   window.location.href = "./signup.html"
-  
+
 
 
 
