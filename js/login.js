@@ -134,7 +134,6 @@ async function main() {
     create_user()
     loginUser()
 
-
 }
 main();
 
