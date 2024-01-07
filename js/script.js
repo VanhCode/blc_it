@@ -1,3 +1,53 @@
+const API_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiIyNWRkZTkxYy1mMzUzLTQ2ODMtODdmYi05MzVlNzcxZWVhNjMiLCJzdWIiOiI4MTcwOThhOS05ODA1LTQ2YmQtOTQzZC0wODljZDAyYjBjMTgiLCJpYXQiOjE3MDQ2NDQ2NTN9.6yeE2wLDXTWCmVN1VFZ6NHLXtIIr_SH0SVfIOznzHsQ";
+
+async function getMoney(idReference) {
+  const options = {
+    method: "GET",
+    headers: { accept: "application/json", "x-api-key": API_KEY },
+  };
+
+  let data = await fetch(
+    `https://api.gameshift.dev/users/${idReference}/assets`,
+    options
+  );
+  data = await data.json();
+  data = data.data;
+  let money = data.find((item) => item.name === "tiền");
+  return money.attributes[0].value;
+}
+async function setMoney(idReference, money) {
+  const options = {
+    method: "GET",
+    headers: { accept: "application/json", "x-api-key": API_KEY },
+  };
+
+  let data = await fetch(
+    `https://api.gameshift.dev/users/${idReference}/assets`,
+    options
+  );
+  data = await data.json();
+  data = data.data;
+  data = data.find((item) => item.name === "tiền");
+  let idNFT = data.id;
+
+  const options1 = {
+    method: "PUT",
+    headers: {
+      accept: "application/json",
+      "x-api-key": API_KEY,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      attributes: [{ traitType: "money", value: money.toString() }],
+    }),
+  };
+
+  return fetch("https://api.gameshift.dev/assets/" + idNFT, options1)
+    .then((response) => response.json())
+    .catch((err) => console.error(err));
+}
+
 function getAllAccess() {
   const options = {
     method: "GET",
@@ -14,7 +64,7 @@ function getAllAccess() {
 async function getAccessByReferenceId(referenceId) {
   let allAcess = await getAllAccess();
   let accessByReferenceId = allAcess.data.filter(
-    (item) => item.owner.referenceId == referenceId
+    (item) => item.owner.referenceId == referenceId && item.name == "plot"
   );
   return accessByReferenceId;
 }
@@ -24,7 +74,7 @@ function getAccessById(id) {
     headers: { accept: "application/json", "x-api-key": API_KEY },
   };
 
-   return fetch("https://api.gameshift.dev/assets/" + id, options)
+  return fetch("https://api.gameshift.dev/assets/" + id, options)
     .then((response) => response.json())
     .catch((err) => console.error(err));
 }
@@ -46,53 +96,51 @@ function editPlotItem(idNFT, plot_status = "plot ready") {
     .catch((err) => console.error(err));
 }
 function createPlotItem(referenceId) {
-      const options = {
-        method: "POST",
-        headers: {
-          accept: "application/json",
-          "x-api-key": API_KEY,
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          details: {
-            attributes: [
-              {
-                traitType: "plot_status",
-                value: "plot ready",
-              },
-            ],
-            description: "plot",
-            imageUrl:
-              "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjc7Ah4Ol_cLTqt-78GEtWfvPv3PuqYZ-8CgBHTWyyy-zUf-AiuAxJ_H7YhyOffejL5wCSW_HxCRiZO0HWPC3lrV1iSXVH7mBrbrOKuT-ExZg5q-ty6XeVDuW5VamiI3vACg0Wp3bx3skhSOiZtZdHUgHd090NKNp2gaBhAf9re-kIEuOMz0bafpK3GLTE/s1600/dat.png",
-            name: "plot",
+  const options = {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "x-api-key": API_KEY,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      details: {
+        attributes: [
+          {
+            traitType: "plot_status",
+            value: "plot ready",
           },
-          destinationUserReferenceId: referenceId,
-        }),
-      };
+        ],
+        description: "plot",
+        imageUrl:
+          "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjc7Ah4Ol_cLTqt-78GEtWfvPv3PuqYZ-8CgBHTWyyy-zUf-AiuAxJ_H7YhyOffejL5wCSW_HxCRiZO0HWPC3lrV1iSXVH7mBrbrOKuT-ExZg5q-ty6XeVDuW5VamiI3vACg0Wp3bx3skhSOiZtZdHUgHd090NKNp2gaBhAf9re-kIEuOMz0bafpK3GLTE/s1600/dat.png",
+        name: "plot",
+      },
+      destinationUserReferenceId: referenceId,
+    }),
+  };
 
-      return fetch("https://api.gameshift.dev/assets", options)
-        .then((response) => response.json())
-        .catch((err) => console.error(err));
-    }
+  return fetch("https://api.gameshift.dev/assets", options)
+    .then((response) => response.json())
+    .catch((err) => console.error(err));
+}
 const email = localStorage.getItem("userEmail");
-const API_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI2YmY0NjU2Yy0wY2Q1LTRiNTgtYTJiMy05NDMyOTM2Yjg2YmMiLCJzdWIiOiI1YTk5NjEzZi0wNjUwLTQ5MTgtYmYxYy1iMGViMzc4OTU3N2QiLCJpYXQiOjE3MDQ1MTEzMDl9.oDbn6dEHLnrkstptlVgCES0Ey17xHcgBDRIJQehCvho";
 console.log(email);
 var NumPlots = 0; //a reset for the number of plots a user has
-var Money = 10000000000; //the amount of money to start
+var Money = 0; //the amount of money to start
 var PlotCost = 100; //Cost of a Plot of land
 
-var SeedCostT1 = 30; //Cost of seeds to plant
-var SeedCostT2 = 50; //Cost of seeds to plant
-var SeedCostT3 = 1; //Cost of seeds to plant
+var SeedCostT1 = 40; //Cost of seeds to plant
+var SeedCostT2 = 80; //Cost of seeds to plant
+var SeedCostT3 = 120; //Cost of seeds to plant
 
-var counterLimitT1 = 32; //Time it takes to grow to corn \ MUST BE DIVISIBLE BY 4
-var counterLimitT2 = 64; //X amount of the counter limit for other crops
-var counterLimitT3 = 1; //X amount of the counter limit for other crops
+var counterLimitT1 = 4; //Time it takes to grow to corn \ MUST BE DIVISIBLE BY 4
+var counterLimitT2 = 8; //X amount of the counter limit for other crops
+var counterLimitT3 = 12; //X amount of the counter limit for other crops
 
-var ProfitT1 = 55; //Profit per harvest
-var ProfitT2 = 95; //Profit modifier for other crops
-var ProfitT3 = 1000000000; //Profit modifier for other crops
+var ProfitT1 = 50; //Profit per harvest
+var ProfitT2 = 100; //Profit modifier for other crops
+var ProfitT3 = 160; //Profit modifier for other crops
 
 var coopProfit = 150; //Profit from the purchased coop
 
@@ -133,14 +181,14 @@ var spawnNewPlot = $("<div />").append($(".plotBox").clone()).html();
 // console.log("you have " + NumPlots + " purchased plots");
 
 //AMOUNT OF MONEY
-var MoneyFromStorage = localStorage.getItem("NumMoney");
-if (MoneyFromStorage == null || MoneyFromStorage == "NaN") {
-  //same as above
-  Money = Money;
-} else {
-  //same as above
-  Money = parseInt(MoneyFromStorage);
-}
+// var MoneyFromStorage = localStorage.getItem("NumMoney");
+// if (MoneyFromStorage == null || MoneyFromStorage == "NaN") {
+//   //same as above
+//   Money = Money;
+// } else {
+//   //same as above
+//   Money = parseInt(MoneyFromStorage);
+// }
 console.log("you have $" + Money);
 
 //SET STUFF
@@ -164,6 +212,7 @@ if (CoopFromStorage == null || CoopFromStorage == "NaN") {
   console.log("you don't own the coop!");
 }
 async function main() {
+  Money = parseInt(await getMoney(email));
   const PlotOfUser = await getAccessByReferenceId(email);
   console.log(PlotOfUser);
   NumPlots = PlotOfUser;
@@ -258,7 +307,8 @@ async function main() {
         showConfirmMenu();
       }
       // use setTimeout() to execute
-      setTimeout(HideShowConfirmMenu, 100);
+      // setTimeout(HideShowConfirmMenu, 100);
+      HideShowSelectionMenu();
       //convertPlot($(this));
       //makePlotAvailable();
       //IF PLOT IS READY TO HARVEST
@@ -267,23 +317,19 @@ async function main() {
       //IF PLOT IS SEEDED
       var cropType = checkCropType($(this));
       harvestPlot($(this), cropType);
-      await editPlotItem(
-        this.getAttribute("idplot"),
-        'plot ready'
-      );
+      await editPlotItem(this.getAttribute("idplot"), "plot ready");
+      await setMoney(email, Money);
     } else if ($(this).hasClass("ready")) {
       // trồng
-      await editPlotItem(
-        this.getAttribute("idplot"),
-        'plot ready'
-      );
+      await editPlotItem(this.getAttribute("idplot"), "plot ready");
       hideSeedSelectionMenu();
       function HideShowSelectionMenu() {
         showSeedSelectionMenu();
         playPlantSound();
       }
       // use setTimeout() to execute
-      setTimeout(HideShowSelectionMenu, 100);
+      // setTimeout(, 100);
+      HideShowSelectionMenu();
 
       //setUpSeed($(this));
       currentPlot = $(this);
@@ -291,7 +337,7 @@ async function main() {
   });
 
   //PLANT SEED NEW
-  cropChooserOptions.click(function () {
+  cropChooserOptions.click(async function () {
     var cropType = "";
     cropType = $(this).attr("class").split(" ").pop();
     console.log("crop type is " + cropType);
@@ -302,18 +348,19 @@ async function main() {
     //console.log("this crop will cost you $" + cropCostLocal);
     //Actually plant the seed
     plantSeed(currentPlot, cropType, cropCostLocal);
+    await setMoney(email, Money);
   });
 
   //Click on ye or no option to purchase plot
   ConfirmWrapperOptions.click(async function () {
     //console.log($(this));
     if ($(this).hasClass("yes")) {
-
       await createPlotItem(email);
       convertPlot(currentPlot);
       makePlotAvailable();
       hideConfirmMenu();
       plotWrapper.append(spawnNewPlot);
+      setMoney(email, Money);
     } else if ($(this).hasClass("no")) {
       hideConfirmMenu();
     } else {
@@ -369,13 +416,12 @@ async function spawnSavedPlots() {
       console.log(Plot);
       Plot.setAttribute("idPlot", NumPlots[i].id);
       let access = await getAccessById(NumPlots[i].id);
-      let classAccess='plotBox '+access.attributes[0].value;
-      Plot.className=classAccess;
+      let classAccess = "plotBox " + access.attributes[0].value;
+      Plot.className = classAccess;
       plotWrapper.append(Plot);
       //add the plots the user owns
       //console.log("1 plot appended");
     }
-    
   } else {
     //console.log("NOTHING was spawned");
   }
@@ -465,7 +511,6 @@ function makePlotAvailable() {
   var NumPlotCurrent = $("#plotWrapper > .plotBox").length;
   //console.log(NumPlotsAvail);
   if (Money >= PlotCost && NumPlotsAvail == 0 && NumPlotCurrent <= 15) {
-   
     //console.log(spawnNewPlot);
     console.log("a new plot has been added");
   } else {

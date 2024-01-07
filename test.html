@@ -33,12 +33,15 @@
       console.log(accessByReferenceId);
     }
     function getAccessById(id) {
-      const options = { method: 'GET', headers: { accept: 'application/json', 'x-api-key': API_KEY } };
+      const options = {
+        method: "GET",
+        headers: { accept: "application/json", "x-api-key": API_KEY },
+      };
 
-      fetch('https://api.gameshift.dev/assets/'+id, options)
-        .then(response => response.json())
-        .then(response => console.log(response))
-        .catch(err => console.error(err));
+      fetch("https://api.gameshift.dev/assets/" + id, options)
+        .then((response) => response.json())
+        .then((response) => console.log(response))
+        .catch((err) => console.error(err));
     }
 
     function createPlotItem(referenceId) {
@@ -71,27 +74,74 @@
         .catch((err) => console.error(err));
     }
 
-
-
-    function editPlotItem(idNFT,plot_status='null'){
+    function editPlotItem(idNFT, plot_status = "null") {
       const options = {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          accept: 'application/json',
-          'x-api-key': API_KEY,
-          'content-type': 'application/json'
+          accept: "application/json",
+          "x-api-key": API_KEY,
+          "content-type": "application/json",
         },
-        body: JSON.stringify({ attributes: [{ traitType: 'plot_status', value: plot_status }] })
+        body: JSON.stringify({
+          attributes: [{ traitType: "plot_status", value: plot_status }],
+        }),
       };
 
-      return fetch('https://api.gameshift.dev/assets/id', options)
-        .then(response => response.json())
-        .catch(err => console.error(err));
+      return fetch("https://api.gameshift.dev/assets/id", options)
+        .then((response) => response.json())
+        .catch((err) => console.error(err));
     }
+    async function getMoney(idReference) {
+      const options = {
+        method: "GET",
+        headers: { accept: "application/json", "x-api-key": API_KEY },
+      };
 
+      let data = await fetch(
+        `https://api.gameshift.dev/users/${idReference}/assets`,
+        options
+      );
+      data = await data.json();
+      data = data.data;
+      let money = data.find((item) => item.name === "tiền");
+      return money.attributes[0].value;
+    }
+    async function setMoney(idReference, money) {
+      const options = {
+        method: "GET",
+        headers: { accept: "application/json", "x-api-key": API_KEY },
+      };
+
+      let data = await fetch(
+        `https://api.gameshift.dev/users/${idReference}/assets`,
+        options
+      );
+      data = await data.json();
+      data = data.data;
+      data = data.find((item) => item.name === "tiền");
+      let idNFT = data.id;
+
+      const options1 = {
+        method: "PUT",
+        headers: {
+          accept: "application/json",
+          "x-api-key":
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI2YmY0NjU2Yy0wY2Q1LTRiNTgtYTJiMy05NDMyOTM2Yjg2YmMiLCJzdWIiOiI1YTk5NjEzZi0wNjUwLTQ5MTgtYmYxYy1iMGViMzc4OTU3N2QiLCJpYXQiOjE3MDQ1MTEzMDl9.oDbn6dEHLnrkstptlVgCES0Ey17xHcgBDRIJQehCvho",
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          attributes: [{ traitType: "money", value: money.toString() }],
+        }),
+      };
+
+      fetch("https://api.gameshift.dev/assets/" + idNFT, options1)
+        .then((response) => response.json())
+        .then((response) => console.log(response))
+        .catch((err) => console.error(err));
+    }
     async function main() {
-      console.log(getAccessByReferenceId("chuabaogioduocdi@gmail.com"));
-
+      // let money = await getMoney("duynnz1312@gmail.com");
+      setMoney("duynnz1312@gmail.com", 1000);
     }
     main();
   </script>
