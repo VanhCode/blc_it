@@ -126,25 +126,25 @@ function createPlotItem(referenceId) {
 }
 const email = localStorage.getItem("userEmail");
 console.log(email);
-var NumPlots = 0; //a reset for the number of plots a user has
-var Money = 0; //the amount of money to start
-var PlotCost = 100; //Cost of a Plot of land
+var NumPlots = 0; // Đặt lại cho số lượng lô mà người dùng có
+var Money = 0; // số tiền để bắt đầu
+var PlotCost = 100; // Chi phí của một mảnh đất
 
-var SeedCostT1 = 40; //Cost of seeds to plant
-var SeedCostT2 = 80; //Cost of seeds to plant
-var SeedCostT3 = 120; //Cost of seeds to plant
+var SeedCostT1 = 40; // Chi phí hạt giống
+var SeedCostT2 = 80; // Chi phí hạt giống
+var SeedCostT3 = 120; // Chi phí hạt giống
 
-var counterLimitT1 = 4; //Time it takes to grow to corn \ MUST BE DIVISIBLE BY 4
-var counterLimitT2 = 8; //X amount of the counter limit for other crops
-var counterLimitT3 = 12; //X amount of the counter limit for other crops
+var counterLimitT1 = 4; // Thời gian để phát triển thành ngô \ phải chia hết cho 4
+var counterLimitT2 = 8; // x số lượng giới hạn bộ đếm cho các loại cây trồng khác
+var counterLimitT3 = 12; // x số lượng giới hạn bộ đếm cho các loại cây trồng khác
 
-var ProfitT1 = 50; //Profit per harvest
-var ProfitT2 = 100; //Profit modifier for other crops
-var ProfitT3 = 160; //Profit modifier for other crops
+var ProfitT1 = 50; // Lợi nhuận cho mỗi vụ thu hoạch
+var ProfitT2 = 100; // Công cụ sửa đổi lợi nhuận cho các loại cây trồng khác
+var ProfitT3 = 160; // Công cụ sửa đổi lợi nhuận cho các loại cây trồng khác
 
-var coopProfit = 150; //Profit from the purchased coop
+var coopProfit = 150; // Lợi nhuận từ Coop đã mua
 
-//Get DOM elements
+// Nhận các yếu tố DOM
 var cropChooserWrapper = $("#cropChooserWrapper");
 var cropChooserOptions = $("#cropChooserWrapper > .footer > .crop-type-option");
 var plotWrapper = $("#plotWrapper");
@@ -157,55 +157,55 @@ var ConfirmWrapperOptions = $("#ConfirmWrapper > .buttons > .button");
 var tutorialFloaty = $("#tutorialFloat");
 var seedSelection = ".seed-selection";
 
-//Purchase Coop
+// Mua Coop
 var coopBuyOption = $("#CoopBuyOption");
 var coopBuyOptions = $("#CoopExpansionWrapper > .buttons > .button");
 var CoopExpansionWrapper = $("#CoopExpansionWrapper");
 var Coop = $("#Coop");
 
-//Grab code for spaner plots & remove when done
+// lấy mã cho các sơ đồ Spaner và xóa khi hoàn thành
 var spawnSavedPlot = $(".plotBoxSaved").html();
 $(".plotBoxSaved").remove();
-//Grab code for new plot
+// lấy mã cho cốt truyện mới
 var spawnNewPlot = $("<div />").append($(".plotBox").clone()).html();
-//LOCAL STORAGE VARIABLES
-//NUMBER OF PRE-PURCHASED PLOTS
-// var NumPlotsFromStorage = localStorage.getItem("NumPlots");
-// if (NumPlotsFromStorage == null || NumPlotsFromStorage == "NaN") {
-//   //if no saved plots then reset to variable
-//   NumPlots = NumPlots;
-// } else {
-//   //otherwise set the number to what is in storage
-//   NumPlots = parseInt(NumPlotsFromStorage);
-// }
-// console.log("you have " + NumPlots + " purchased plots");
+// Các biến lưu trữ cục bộ
+// số lô mua trước
+// var numplotsFromStorage = localStorage.getItem ("numplots");
+// if (numplotsFromStorage == null |
+// // Nếu không có sơ đồ được lưu thì hãy đặt lại về biến
+// numplots = numplots;
+// } khác {
+// // Nếu không, đặt số thành những gì đang lưu trữ
+// numplots = parseInt (numplotsFromStorage);
+//}
+// console.log ("bạn có" + numplots + "sơ đồ đã mua");
 
-//AMOUNT OF MONEY
-// var MoneyFromStorage = localStorage.getItem("NumMoney");
-// if (MoneyFromStorage == null || MoneyFromStorage == "NaN") {
-//   //same as above
-//   Money = Money;
-// } else {
-//   //same as above
-//   Money = parseInt(MoneyFromStorage);
-// }
+//LƯỢNG TIỀN
+// var moneyFromStorage = localStorage.getItem ("nummoney");
+// if (moneyFromStorage == null |
+//   //giống như trên
+// tiền = tiền;
+// } khác {
+//   //giống như trên
+// Tiền = ParseInt (MoneyFromStorage);
+//}
 console.log("you have $" + Money);
 
-//SET STUFF
+// Đặt công cụ
 $("#moneyBox").html(Money);
 
-//GET COOP INFO
+//nhậnThôngTinCoop
 var CoopFromStorage = localStorage.getItem("CoopPurchased");
 if (CoopFromStorage == null || CoopFromStorage == "NaN") {
-  //same as above
-  //Money = Money;
+  //giốngNhưTrên
+  // tiền = tiền;
   console.log("you don't own the coop!");
 } else if (CoopFromStorage == "true") {
-  //Show the Coop
+  //hiểnThịChuồng
   showTheCoop();
-  //Start the Counter
+  //bắtĐầuQuầy
   runTheCoop();
-  //Update Money Stuff
+  //cậpNhậtCôngCụTiền
   disableCoopPurchase();
   console.log("you own the coop!");
 } else if (CoopFromStorage == "false") {
@@ -216,19 +216,19 @@ async function main() {
   const PlotOfUser = await getAccessByReferenceId(email);
   console.log(PlotOfUser);
   NumPlots = PlotOfUser;
-  //RESET LOCAL STORAGE
+  // Đặt lại lưu trữ cục bộ
   $(document).on("click", "#resetAll", function () {
     localStorage.clear();
     console.log("All LocalStorage Items Clear");
   });
-  //END RESET LOCAL STORAGE
+  // Kết thúc lưu trữ cục bộ
 
-  //Set Game Variables
+  // Đặt biến trò chơi
 
-  //SET STUFF
+  // Đặt công cụ
   $("#moneyBox").html(Money);
 
-  //Set HTML on starting elements (cost, time, and profit)
+  // Đặt HTML khi bắt đầu các yếu tố (chi phí, thời gian và lợi nhuận)
   cropChooserWrapper
     .find(".corn")
     .find(".cost")
@@ -268,18 +268,18 @@ async function main() {
     .find(".profit")
     .html("Profit: $" + ProfitT3);
 
-  //CREATE SAVED PLOTS
+  // Tạo lô đã lưu
   spawnSavedPlots();
   makePlotAvailable();
-  //END CREATE SAVED PLOTS
+  // kết thúc tạo các lô đã lưu
 
-  //RUN STUFF
-  //TURN OFF TUTORIAL
+  // Chạy công cụ
+  // Tắt hướng dẫn
   $(document).on("click", ".tutorialOne", function () {
     tutorialFloaty.fadeOut();
     $(this).removeClass("tutorialOne");
   });
-  //END TURN OFF TUTORIAL
+  // Kết thúc Tắt hướng dẫn
 
   $("#closeChooser").click(function () {
     hideSeedSelectionMenu();
@@ -295,65 +295,65 @@ async function main() {
 
   var currentPlot = "";
 
-  //CLICK ON A PLOT
+  // Nhấp vào một cốt truyện
   $(document).on("click", ".plotBox", async function (event) {
-    //console.log("clicked on plot");
+    //console.log("Clicked trên cốt truyện ");
     if ($(this).hasClass("available")) {
-      //vô dụng
-      //IF PLOT IS AVAILABLE
+      //vôDụng
+      // Nếu có sẵn cốt truyện
       currentPlot = $(this);
       hideConfirmMenu();
       function HideShowConfirmMenu() {
         showConfirmMenu();
       }
-      // use setTimeout() to execute
-      // setTimeout(HideShowConfirmMenu, 100);
+      // sử dụng setTimeout () để thực thi
+      // setTimeout (HideshowConfirmMenu, 100);
       HideShowSelectionMenu();
-      //convertPlot($(this));
-      //makePlotAvailable();
-      //IF PLOT IS READY TO HARVEST
+      // convertplot ($ (this));
+      // MakePlotaVailable ();
+      // Nếu cốt truyện đã sẵn sàng để thu hoạch
     } else if ($(this).hasClass("ready-to-harvest")) {
-      // thu hoạch
-      //IF PLOT IS SEEDED
+      //ThuHoạch
+      // Nếu cốt truyện được gieo hạt
       var cropType = checkCropType($(this));
       harvestPlot($(this), cropType);
       await editPlotItem(this.getAttribute("idplot"), "plot ready");
       await setMoney(email, Money);
     } else if ($(this).hasClass("ready")) {
-      // trồng
+      //Trồng
       await editPlotItem(this.getAttribute("idplot"), "plot ready");
       hideSeedSelectionMenu();
       function HideShowSelectionMenu() {
         showSeedSelectionMenu();
         playPlantSound();
       }
-      // use setTimeout() to execute
-      // setTimeout(, 100);
+      // sử dụng setTimeout () để thực thi
+      //ĐặtThờiGianChờ (,100);
       HideShowSelectionMenu();
 
-      //setUpSeed($(this));
+      // thiết lập ($ (this));
       currentPlot = $(this);
     }
   });
 
-  //PLANT SEED NEW
+  // hạt giống mới
   cropChooserOptions.click(async function () {
     var cropType = "";
     cropType = $(this).attr("class").split(" ").pop();
     console.log("crop type is " + cropType);
-    //Add seed type to parent when planting seed for first time
+    // Thêm loại hạt giống vào cha mẹ khi gieo hạt lần đầu tiên
     currentPlot.addClass(cropType);
-    //Get cost of Crop based on type
+    // Nhận chi phí cây trồng dựa trên loại
     var cropCostLocal = checkCropCost(cropType);
-    //console.log("this crop will cost you $" + cropCostLocal);
-    //Actually plant the seed
+    //console.log(" this crop sẽ tiêu tốn của bạn $ " + cropcostlocal);
+    // thực sự gieo hạt giống
     plantSeed(currentPlot, cropType, cropCostLocal);
     await setMoney(email, Money);
   });
 
-  //Click on ye or no option to purchase plot
+  // Nhấp vào có hoặc không có tùy chọn để mua lô
   ConfirmWrapperOptions.click(async function () {
-    //console.log($(this));
+    //consoleLog($(this));
     if ($(this).hasClass("yes")) {
       await createPlotItem(email);
       convertPlot(currentPlot);
@@ -367,13 +367,13 @@ async function main() {
     }
   });
 
-  //Trigger Coop Buy Option
+  // Trigger Coop Mua tùy chọn
   coopBuyOption.click(function () {
     showCoopMenu();
   });
 
-  //Buy The Coop
-  // plotWrapper.appendChild(spawnNewPlot);
+  // Mua chuồng
+  // PlotWrapper.AppendChild (SpawnNewplot);
   console.log(plotWrapper);
   coopBuyOptions.click(function () {
     if ($(this).hasClass("yes")) {
@@ -387,9 +387,9 @@ async function main() {
 }
 main();
 
-//FUNCTIONS
+//functions
 
-//GameSounds
+//ÂmThanhTròChơi
 function playHarvestSound() {
   var audio = document.getElementById("harvestSound");
   audio.play();
@@ -401,13 +401,13 @@ function playPlantSound() {
 }
 
 async function spawnSavedPlots() {
-  var reqPlotsForSpawn = NumPlots.length; //get number of plots minus 1
+  var reqPlotsForSpawn = NumPlots.length; // Nhận số lô trừ 1
   if (reqPlotsForSpawn >= 1 && NumPlots.length <= 16) {
-    //if 1 or more AND less than 16 then spawn purchased plots
-    //console.log("you have enough plots to spawn");
+    // Nếu 1 trở lên và ít hơn 16 sau đó sinh ra các lô đã mua
+    //console.log("You có đủ lô để sinh sản ");
 
     plot.remove();
-    tutorialFloaty.hide(); //hide tutorial if player has already played the game
+    tutorialFloaty.hide(); // Ẩn hướng dẫn nếu người chơi đã chơi trò chơi
 
     for (var i = 0; i < NumPlots.length; i++) {
       let wrap = document.createElement("div");
@@ -419,11 +419,11 @@ async function spawnSavedPlots() {
       let classAccess = "plotBox " + access.attributes[0].value;
       Plot.className = classAccess;
       plotWrapper.append(Plot);
-      //add the plots the user owns
-      //console.log("1 plot appended");
+      // Thêm các lô mà người dùng sở hữu
+      //console.log("1 cốt truyện được thêm vào ");
     }
   } else {
-    //console.log("NOTHING was spawned");
+    //console.log("Nothing đã được sinh ra ");
   }
   plotWrapper.append(spawnNewPlot);
 }
@@ -444,15 +444,15 @@ function checkCropType(plotInfo) {
 function checkCropCost(plotType) {
   if (plotType == "corn") {
     return SeedCostT1;
-    //console.log("crop is type corn and the cost is: " + SeedCost);
+    //console.log("Crop là loại ngô và chi phí là: " + seedcost);
   } else if (plotType == "blueberry") {
     return SeedCostT2;
-    //console.log("crop is type strawberry and the cost is: " + SeedCost * SeedCostModifier);
+    //console.log("Crop là loại dâu tây và chi phí là: " + SeedCost * SeedCostModifier);
   } else if (plotType == "watermelon") {
     return SeedCostT3;
-    //console.log("crop is type blueberry and the cost is: " + SeedCost * SeedCostModifier);
+    //console.log("Crop là loại việt quất và chi phí là: " + SeedCost * SeedCostModifier);
   } else {
-    //do nothing
+    //không làm gì cả
   }
 }
 
@@ -464,26 +464,26 @@ function checkCropProfit(plotType) {
   } else if (plotType == "watermelon") {
     return ProfitT3;
   } else {
-    //do nothing
+    //không làm gì cả
   }
 }
 
 function checkCropTimerLimit(plotType) {
   if (plotType == "corn") {
     return counterLimitT1;
-    //console.log("plot type is corn");
+    //console.log("Plot loại là ngô ");
   } else if (plotType == "blueberry") {
     return counterLimitT2;
-    //console.log("plot type is blueberry");
+    //console.log("Plot loại là quả việt quất ");
   } else if (plotType == "watermelon") {
     return counterLimitT3;
-    //console.log("plot type is watermelon");
+    //console.log("Plot loại là dưa hấu ");
   } else {
-    //do nothing
+    //không làm gì cả
   }
 }
 
-//Function that plants the seed after getting and setting variables
+// Chức năng trồng hạt giống sau khi nhận và thiết lập các biến
 function plantSeed(plotInfo, plotType, cropCost) {
   console.log("You have: $" + Money);
   if (Money >= cropCost) {
@@ -503,23 +503,23 @@ function plantSeed(plotInfo, plotType, cropCost) {
     BottomMessageUI.html("You DO NOT have enough money!");
     animateBottomUITooltip();
   }
-} //END PLANT SEED
+} // kết thúc hạt giống cây trồng
 
-//MAKES A PLOT AVAILABLE TO USE IF CONDITIONS MET
+// cung cấp một lô có sẵn để sử dụng nếu điều kiện đáp ứng
 function makePlotAvailable() {
   var NumPlotsAvail = $("#plotWrapper > .available").length;
   var NumPlotCurrent = $("#plotWrapper > .plotBox").length;
-  //console.log(NumPlotsAvail);
+  //console.log(NUMPLOTSAVAIL);
   if (Money >= PlotCost && NumPlotsAvail == 0 && NumPlotCurrent <= 15) {
-    //console.log(spawnNewPlot);
+    //console.log(spawnNewplot);
     console.log("a new plot has been added");
   } else {
-    //Do Nothing
+    //Không làm gì cả
     console.log("needs more money to spawn new plot");
   }
 }
 
-//Converts plot from available to harvestable
+// chuyển đổi cốt truyện từ có sẵn sang có thể thu hoạch được
 function convertPlot(plotInfo) {
   if (Money >= PlotCost) {
     plotInfo.removeClass("available").addClass("plot ready");
@@ -539,7 +539,7 @@ function convertPlot(plotInfo) {
   }
 }
 
-//HARVEST PLOT
+// Lô thu hoạch
 function harvestPlot(plotInfo, plotType) {
   playHarvestSound();
   console.log("Prior to harvest you have $" + Money);
@@ -547,11 +547,11 @@ function harvestPlot(plotInfo, plotType) {
 
   localProfit = checkCropProfit(plotType);
 
-  //console.log("This Has A Grown Crop!");
+  //console.log(" Điều này có một vụ mùa đã trồng! ");
   plotInfo.removeClass();
   plotInfo.addClass("plotBox plot ready");
-  //animateBottomUITooltip();
-  //MAKE MONEY
+  // animateBottomiTooltip ();
+  //LÀM RA TIỀN
   Money = Money + localProfit;
   SaveMoneyAmmount(Money);
   MoneyBox.html(Money);
@@ -561,10 +561,10 @@ function harvestPlot(plotInfo, plotType) {
   animateMoneyTooltip();
   makePlotAvailable();
   plotInfo.attr("title", "Ready for Planting!");
-  //console.log("new plot has spawned");
-} //END HARVEST PLOT
+  //console.log("New cốt truyện đã sinh ra ");
+} // kết thúc âm mưu thu hoạch
 
-//PLOT TIMER
+// Hẹn giờ âm mưu
 function startPlotTimer(plotInfo, plotType) {
   var counter = 0;
   var counterFraction = 4;
@@ -581,8 +581,8 @@ function startPlotTimer(plotInfo, plotType) {
     );
     counter++;
     var counterFractioned = localCounterLimit / counterFraction;
-    //console.log(counterFractioned);
-    //console.log(counter);
+    //console.log(Countractioned);
+    //console.log(Count);
     if (counter == counterFractioned * 1) {
       plotInfo
         .removeClass("seed-" + plotTypeFinal)
@@ -603,16 +603,16 @@ function startPlotTimer(plotInfo, plotType) {
         plotInfo.attr("idplot"),
         plotTypeFinal + " ready-to-harvest adult-" + plotTypeFinal
       );
-      //BottomMessageUI.html("Ready to Harvest!");
+      //Bottommessageui.html(" đã sẵn sàng để thu hoạch! ");
       plotInfo.attr("title", "Ready to Harvest!");
       clearInterval(interval);
     } else {
-      //do nothing
+      //không làm gì cả
     }
   }, 1000);
-} //PLOT TIMER
+} // Hẹn giờ âm mưu
 
-//ANIMATE THE MONEY TIP
+// làm động tiền bạc
 function animateMoneyTooltip() {
   MoneyBoxMessage.animate(
     {
@@ -629,7 +629,7 @@ function animateMoneyTooltip() {
   );
 }
 
-//ANIMATE THE BOTTOM MESSAGE TIP
+// làm nổi bật đầu tin nhắn dưới cùng
 function animateBottomUITooltip() {
   BottomMessageUI.animate(
     {
@@ -655,7 +655,7 @@ function showSeedSelectionMenu() {
   } else if (Money >= SeedCostT2) {
     cropChooserWrapper.find(".corn").removeClass("hide");
     cropChooserWrapper.find(".blueberry").removeClass("hide");
-    //cropChooserWrapper.find(".watermelon").removeClass("hide");
+    //cropchooserwrapper.find(".watermelon").removeclass("hide ");
   } else if (Money >= SeedCostT1) {
     cropChooserWrapper.find(".corn").removeClass("hide");
   }
@@ -673,35 +673,35 @@ function hideConfirmMenu() {
   ConfirmWrapper.removeClass("show");
 }
 
-//Save Plots as they are purchased
+// Lưu các lô khi chúng được mua
 function SaveNumPlots() {
   NumPlots = NumPlots + 1;
   localStorage.setItem("NumPlots", NumPlots);
-  //console.log("You have " + NumPlots + " purchased plots");
+  //console.log("You có " + numplots +" sơ đồ đã mua ");
 }
 
-//Save Money as it is purchased
+// Tiết kiệm tiền khi nó được mua
 function SaveMoneyAmmount(moneyAmount) {
   localStorage.setItem("NumMoney", moneyAmount);
-  //console.log("You have $" + moneyAmount);
+  //console.log("You có $ " + moneyamount);
 }
 
-//Show Coop Buy Option
+// Hiển thị tùy chọn mua chuồng
 function showCoopMenu() {
   CoopExpansionWrapper.addClass("show");
 }
-//Hide Coop Buy Option
+// Ẩn Coop Mua tùy chọn
 function hideCoopMenu() {
   CoopExpansionWrapper.removeClass("show");
 }
 
 function buyTheCoop() {
   if (Money >= 10) {
-    //Show the Coop
+    // Hiển thị chuồng
     showTheCoop();
-    //Start the Counter
+    // Bắt đầu quầy
     runTheCoop();
-    //Update Money Stuff
+    // Cập nhật công cụ tiền
     Money = Money - 10;
     SaveMoneyAmmount(Money);
     MoneyBox.html(Money);
@@ -709,7 +709,7 @@ function buyTheCoop() {
     console.log("You Have Used: $10,000");
     console.log("You now own the Coop!");
     animateMoneyTooltip();
-    //Save Local Storage Boolean
+    // Lưu boolean lưu trữ cục bộộ
     localStorage.setItem("CoopPurchased", true);
     disableCoopPurchase();
   } else {
@@ -726,7 +726,7 @@ function runTheCoop() {
     MoneyBoxMessage.html("+ $" + coopProfit);
     console.log("You Have Made: " + coopProfit + " from the Coop");
     animateMoneyTooltip();
-  }, 60 * 1000); // 60 * 1000 milsec
+  }, 60 * 1000); //60 *1000Milsec
 }
 
 function showTheCoop() {
