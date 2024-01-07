@@ -108,7 +108,7 @@ function createPlotItem(referenceId) {
                 attributes: [
                     {
                         traitType: "plot_status",
-                        value: "null",
+                        value: "plot ready",
                     },
                 ],
                 description: "plot",

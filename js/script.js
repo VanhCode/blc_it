@@ -18,8 +18,65 @@ async function getAccessByReferenceId(referenceId) {
   );
   return accessByReferenceId;
 }
+function getAccessById(id) {
+  const options = {
+    method: "GET",
+    headers: { accept: "application/json", "x-api-key": API_KEY },
+  };
+
+   return fetch("https://api.gameshift.dev/assets/" + id, options)
+    .then((response) => response.json())
+    .catch((err) => console.error(err));
+}
+function editPlotItem(idNFT, plot_status = "plot ready") {
+  const options = {
+    method: "PUT",
+    headers: {
+      accept: "application/json",
+      "x-api-key": API_KEY,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      attributes: [{ traitType: "plot_status", value: plot_status }],
+    }),
+  };
+
+  return fetch(`https://api.gameshift.dev/assets/${idNFT}`, options)
+    .then((response) => response.json())
+    .catch((err) => console.error(err));
+}
+function createPlotItem(referenceId) {
+      const options = {
+        method: "POST",
+        headers: {
+          accept: "application/json",
+          "x-api-key": API_KEY,
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          details: {
+            attributes: [
+              {
+                traitType: "plot_status",
+                value: "plot ready",
+              },
+            ],
+            description: "plot",
+            imageUrl:
+              "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjc7Ah4Ol_cLTqt-78GEtWfvPv3PuqYZ-8CgBHTWyyy-zUf-AiuAxJ_H7YhyOffejL5wCSW_HxCRiZO0HWPC3lrV1iSXVH7mBrbrOKuT-ExZg5q-ty6XeVDuW5VamiI3vACg0Wp3bx3skhSOiZtZdHUgHd090NKNp2gaBhAf9re-kIEuOMz0bafpK3GLTE/s1600/dat.png",
+            name: "plot",
+          },
+          destinationUserReferenceId: referenceId,
+        }),
+      };
+
+      return fetch("https://api.gameshift.dev/assets", options)
+        .then((response) => response.json())
+        .catch((err) => console.error(err));
+    }
 const email = localStorage.getItem("userEmail");
-const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI2YmY0NjU2Yy0wY2Q1LTRiNTgtYTJiMy05NDMyOTM2Yjg2YmMiLCJzdWIiOiI1YTk5NjEzZi0wNjUwLTQ5MTgtYmYxYy1iMGViMzc4OTU3N2QiLCJpYXQiOjE3MDQ1MTEzMDl9.oDbn6dEHLnrkstptlVgCES0Ey17xHcgBDRIJQehCvho";
+const API_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI2YmY0NjU2Yy0wY2Q1LTRiNTgtYTJiMy05NDMyOTM2Yjg2YmMiLCJzdWIiOiI1YTk5NjEzZi0wNjUwLTQ5MTgtYmYxYy1iMGViMzc4OTU3N2QiLCJpYXQiOjE3MDQ1MTEzMDl9.oDbn6dEHLnrkstptlVgCES0Ey17xHcgBDRIJQehCvho";
 console.log(email);
 var NumPlots = 0; //a reset for the number of plots a user has
 var Money = 10000000000; //the amount of money to start
@@ -62,9 +119,7 @@ var Coop = $("#Coop");
 var spawnSavedPlot = $(".plotBoxSaved").html();
 $(".plotBoxSaved").remove();
 //Grab code for new plot
-var spawnNewPlot = $("<div />")
-  .append($(".plotBox").clone())
-  .html();
+var spawnNewPlot = $("<div />").append($(".plotBox").clone()).html();
 //LOCAL STORAGE VARIABLES
 //NUMBER OF PRE-PURCHASED PLOTS
 // var NumPlotsFromStorage = localStorage.getItem("NumPlots");
@@ -98,7 +153,7 @@ if (CoopFromStorage == null || CoopFromStorage == "NaN") {
   //Money = Money;
   console.log("you don't own the coop!");
 } else if (CoopFromStorage == "true") {
-  //Show the Coop 
+  //Show the Coop
   showTheCoop();
   //Start the Counter
   runTheCoop();
@@ -109,189 +164,179 @@ if (CoopFromStorage == null || CoopFromStorage == "NaN") {
   console.log("you don't own the coop!");
 }
 async function main() {
-  const PlotOfUser= await getAccessByReferenceId(email);
-    console.log(PlotOfUser);
-    NumPlots=PlotOfUser;
+  const PlotOfUser = await getAccessByReferenceId(email);
+  console.log(PlotOfUser);
+  NumPlots = PlotOfUser;
   //RESET LOCAL STORAGE
-$(document).on("click", "#resetAll", function () {
-  localStorage.clear();
-  console.log("All LocalStorage Items Clear");
-});
-//END RESET LOCAL STORAGE
+  $(document).on("click", "#resetAll", function () {
+    localStorage.clear();
+    console.log("All LocalStorage Items Clear");
+  });
+  //END RESET LOCAL STORAGE
 
-//Set Game Variables
+  //Set Game Variables
 
+  //SET STUFF
+  $("#moneyBox").html(Money);
 
-//SET STUFF
-$("#moneyBox").html(Money);
+  //Set HTML on starting elements (cost, time, and profit)
+  cropChooserWrapper
+    .find(".corn")
+    .find(".cost")
+    .html("Cost: $" + SeedCostT1);
+  cropChooserWrapper
+    .find(".corn")
+    .find(".time")
+    .html("Time: " + counterLimitT1 + "s");
+  cropChooserWrapper
+    .find(".corn")
+    .find(".profit")
+    .html("Profit: $" + ProfitT1);
 
-//Set HTML on starting elements (cost, time, and profit)
-cropChooserWrapper
-  .find(".corn")
-  .find(".cost")
-  .html("Cost: $" + SeedCostT1);
-cropChooserWrapper
-  .find(".corn")
-  .find(".time")
-  .html("Time: " + counterLimitT1 + "s");
-cropChooserWrapper
-  .find(".corn")
-  .find(".profit")
-  .html("Profit: $" + ProfitT1);
+  cropChooserWrapper
+    .find(".blueberry")
+    .find(".cost")
+    .html("Cost: $" + SeedCostT2);
+  cropChooserWrapper
+    .find(".blueberry")
+    .find(".time")
+    .html("Time: " + counterLimitT2 + "s");
+  cropChooserWrapper
+    .find(".blueberry")
+    .find(".profit")
+    .html("Profit: $" + ProfitT2);
 
-cropChooserWrapper
-  .find(".blueberry")
-  .find(".cost")
-  .html("Cost: $" + SeedCostT2);
-cropChooserWrapper
-  .find(".blueberry")
-  .find(".time")
-  .html("Time: " + counterLimitT2 + "s");
-cropChooserWrapper
-  .find(".blueberry")
-  .find(".profit")
-  .html("Profit: $" + ProfitT2);
+  cropChooserWrapper
+    .find(".watermelon")
+    .find(".cost")
+    .html("Cost: $" + SeedCostT3);
+  cropChooserWrapper
+    .find(".watermelon")
+    .find(".time")
+    .html("Time: " + counterLimitT3 + "s");
+  cropChooserWrapper
+    .find(".watermelon")
+    .find(".profit")
+    .html("Profit: $" + ProfitT3);
 
-cropChooserWrapper
-  .find(".watermelon")
-  .find(".cost")
-  .html("Cost: $" + SeedCostT3);
-cropChooserWrapper
-  .find(".watermelon")
-  .find(".time")
-  .html("Time: " + counterLimitT3 + "s");
-cropChooserWrapper
-  .find(".watermelon")
-  .find(".profit")
-  .html("Profit: $" + ProfitT3);
+  //CREATE SAVED PLOTS
+  spawnSavedPlots();
+  makePlotAvailable();
+  //END CREATE SAVED PLOTS
 
-//CREATE SAVED PLOTS
-spawnSavedPlots();
-makePlotAvailable();
-//END CREATE SAVED PLOTS
+  //RUN STUFF
+  //TURN OFF TUTORIAL
+  $(document).on("click", ".tutorialOne", function () {
+    tutorialFloaty.fadeOut();
+    $(this).removeClass("tutorialOne");
+  });
+  //END TURN OFF TUTORIAL
 
-//RUN STUFF
-//TURN OFF TUTORIAL
-$(document).on("click", ".tutorialOne", function () {
-  tutorialFloaty.fadeOut();
-  $(this).removeClass("tutorialOne");
-});
-//END TURN OFF TUTORIAL
-
-$("#closeChooser").click(function () {
-  hideSeedSelectionMenu();
-});
-
-$("#closeConfirm").click(function () {
-  hideConfirmMenu();
-});
-
-$("#closeCoopConfirm").click(function () {
-  hideCoopMenu();
-});
-
-var currentPlot = "";
-
-//CLICK ON A PLOT
-$(document).on("click", ".plotBox", function (event) {
-  //console.log("clicked on plot");
-  if ($(this).hasClass("available")) {
-    //IF PLOT IS AVAILABLE
-    currentPlot = $(this);
-    hideConfirmMenu();
-    function HideShowConfirmMenu() {
-      showConfirmMenu();
-    }
-    // use setTimeout() to execute
-    setTimeout(HideShowConfirmMenu, 100);
-    //convertPlot($(this));
-    //makePlotAvailable();
-    //IF PLOT IS READY TO HARVEST
-  } else if ($(this).hasClass("ready-to-harvest")) {
-    //IF PLOT IS SEEDED
-    var cropType = checkCropType($(this));
-    harvestPlot($(this), cropType);
-  } else if ($(this).hasClass("ready")) {
+  $("#closeChooser").click(function () {
     hideSeedSelectionMenu();
-    function HideShowSelectionMenu() {
-      showSeedSelectionMenu();
-      playPlantSound();
+  });
+
+  $("#closeConfirm").click(function () {
+    hideConfirmMenu();
+  });
+
+  $("#closeCoopConfirm").click(function () {
+    hideCoopMenu();
+  });
+
+  var currentPlot = "";
+
+  //CLICK ON A PLOT
+  $(document).on("click", ".plotBox", async function (event) {
+    //console.log("clicked on plot");
+    if ($(this).hasClass("available")) {
+      //vô dụng
+      //IF PLOT IS AVAILABLE
+      currentPlot = $(this);
+      hideConfirmMenu();
+      function HideShowConfirmMenu() {
+        showConfirmMenu();
+      }
+      // use setTimeout() to execute
+      setTimeout(HideShowConfirmMenu, 100);
+      //convertPlot($(this));
+      //makePlotAvailable();
+      //IF PLOT IS READY TO HARVEST
+    } else if ($(this).hasClass("ready-to-harvest")) {
+      // thu hoạch
+      //IF PLOT IS SEEDED
+      var cropType = checkCropType($(this));
+      harvestPlot($(this), cropType);
+      await editPlotItem(
+        this.getAttribute("idplot"),
+        'plot ready'
+      );
+    } else if ($(this).hasClass("ready")) {
+      // trồng
+      await editPlotItem(
+        this.getAttribute("idplot"),
+        'plot ready'
+      );
+      hideSeedSelectionMenu();
+      function HideShowSelectionMenu() {
+        showSeedSelectionMenu();
+        playPlantSound();
+      }
+      // use setTimeout() to execute
+      setTimeout(HideShowSelectionMenu, 100);
+
+      //setUpSeed($(this));
+      currentPlot = $(this);
     }
-    // use setTimeout() to execute
-    setTimeout(HideShowSelectionMenu, 100);
+  });
 
-    //setUpSeed($(this));
-    currentPlot = $(this);
-  } else {
-    //do nothing
-  }
-});
+  //PLANT SEED NEW
+  cropChooserOptions.click(function () {
+    var cropType = "";
+    cropType = $(this).attr("class").split(" ").pop();
+    console.log("crop type is " + cropType);
+    //Add seed type to parent when planting seed for first time
+    currentPlot.addClass(cropType);
+    //Get cost of Crop based on type
+    var cropCostLocal = checkCropCost(cropType);
+    //console.log("this crop will cost you $" + cropCostLocal);
+    //Actually plant the seed
+    plantSeed(currentPlot, cropType, cropCostLocal);
+  });
 
+  //Click on ye or no option to purchase plot
+  ConfirmWrapperOptions.click(async function () {
+    //console.log($(this));
+    if ($(this).hasClass("yes")) {
 
-//PLANT SEED NEW
-cropChooserOptions.click(function () {
-  var cropType = "";
-  cropType = $(this)
-    .attr("class")
-    .split(" ")
-    .pop();
-  console.log("crop type is " + cropType);
-  //Add seed type to parent when planting seed for first time
-  currentPlot.addClass(cropType);
-  //Get cost of Crop based on type
-  var cropCostLocal = checkCropCost(cropType);
-  //console.log("this crop will cost you $" + cropCostLocal);
-  //Actually plant the seed
-  plantSeed(currentPlot, cropType, cropCostLocal);
-});
+      await createPlotItem(email);
+      convertPlot(currentPlot);
+      makePlotAvailable();
+      hideConfirmMenu();
+    } else if ($(this).hasClass("no")) {
+      hideConfirmMenu();
+    } else {
+    }
+  });
 
-//Click on ye or no option to purchase plot
-ConfirmWrapperOptions.click(function () {
-  //console.log($(this));
-  if ($(this).hasClass("yes")) {
-    convertPlot(currentPlot);
-    makePlotAvailable();
-    hideConfirmMenu();
-  } else if ($(this).hasClass("no")) {
-    hideConfirmMenu();
-  } else {
-  }
-});
+  //Trigger Coop Buy Option
+  coopBuyOption.click(function () {
+    showCoopMenu();
+  });
 
-//Trigger Coop Buy Option
-coopBuyOption.click(function () {
-  showCoopMenu();
-});
-
-//Buy The Coop
-coopBuyOptions.click(function () {
-  if ($(this).hasClass("yes")) {
-    buyTheCoop();
-    hideCoopMenu();
-  } else if ($(this).hasClass("no")) {
-    hideCoopMenu();
-  } else {
-  }
-});
+  //Buy The Coop
+  plotWrapper.appendChild(spawnNewPlot);
+  coopBuyOptions.click(function () {
+    if ($(this).hasClass("yes")) {
+      buyTheCoop();
+      hideCoopMenu();
+    } else if ($(this).hasClass("no")) {
+      hideCoopMenu();
+    } else {
+    }
+  });
 }
 main();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //FUNCTIONS
 
@@ -314,16 +359,21 @@ async function spawnSavedPlots() {
 
     plot.remove();
     tutorialFloaty.hide(); //hide tutorial if player has already played the game
-    
+
     for (var i = 0; i < NumPlots.length; i++) {
-      let wrap=document.createElement("div");
-      wrap.innerHTML=spawnSavedPlot
-      let newPlot=wrap.querySelector('div');
-      newPlot.setAttribute('idPlot',NumPlots[i].id)
-      console.log(newPlot);
-      plotWrapper.append(newPlot); //add the plots the user owns
+      let wrap = document.createElement("div");
+      wrap.innerHTML = spawnSavedPlot;
+      let Plot = wrap.querySelector("div");
+      console.log(Plot);
+      Plot.setAttribute("idPlot", NumPlots[i].id);
+      let access = await getAccessById(NumPlots[i].id);
+      let classAccess='plotBox '+access.attributes[0].value;
+      Plot.className=classAccess;
+      plotWrapper.append(Plot);
+      //add the plots the user owns
       //console.log("1 plot appended");
     }
+    
   } else {
     //console.log("NOTHING was spawned");
   }
@@ -476,7 +526,7 @@ function startPlotTimer(plotInfo, plotType) {
 
   localCounterLimit = checkCropTimerLimit(plotType);
 
-  var interval = setInterval(function () {
+  var interval = setInterval(async function () {
     plotInfo.removeClass("plot");
     plotInfo.attr(
       "title",
@@ -486,7 +536,6 @@ function startPlotTimer(plotInfo, plotType) {
     var counterFractioned = localCounterLimit / counterFraction;
     //console.log(counterFractioned);
     //console.log(counter);
-
     if (counter == counterFractioned * 1) {
       plotInfo
         .removeClass("seed-" + plotTypeFinal)
@@ -503,6 +552,10 @@ function startPlotTimer(plotInfo, plotType) {
       plotInfo
         .removeClass("mature-" + plotTypeFinal)
         .addClass("ready-to-harvest adult-" + plotTypeFinal);
+      await editPlotItem(
+        plotInfo.attr("idplot"),
+        plotTypeFinal + " ready-to-harvest adult-" + plotTypeFinal
+      );
       //BottomMessageUI.html("Ready to Harvest!");
       plotInfo.attr("title", "Ready to Harvest!");
       clearInterval(interval);
@@ -517,13 +570,13 @@ function animateMoneyTooltip() {
   MoneyBoxMessage.animate(
     {
       opacity: "1",
-      bottom: "-20px"
+      bottom: "-20px",
     },
     500,
     function () {
       MoneyBoxMessage.animate({
         opacity: "0",
-        bottom: "-30px"
+        bottom: "-30px",
       });
     }
   );
@@ -533,13 +586,13 @@ function animateMoneyTooltip() {
 function animateBottomUITooltip() {
   BottomMessageUI.animate(
     {
-      opacity: "1"
+      opacity: "1",
     },
     1000,
     "linear",
     function () {
       BottomMessageUI.animate({
-        opacity: "0"
+        opacity: "0",
       });
     }
   );
