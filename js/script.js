@@ -308,7 +308,7 @@ async function main() {
       }
       // sử dụng setTimeout () để thực thi
       // setTimeout (HideshowConfirmMenu, 100);
-      HideShowSelectionMenu();
+      showConfirmMenu();
       // convertplot ($ (this));
       // MakePlotaVailable ();
       // Nếu cốt truyện đã sẵn sàng để thu hoạch
