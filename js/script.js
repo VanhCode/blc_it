@@ -313,6 +313,7 @@ async function main() {
       convertPlot(currentPlot);
       makePlotAvailable();
       hideConfirmMenu();
+      plotWrapper.append(spawnNewPlot);
     } else if ($(this).hasClass("no")) {
       hideConfirmMenu();
     } else {
@@ -325,7 +326,8 @@ async function main() {
   });
 
   //Buy The Coop
-  plotWrapper.appendChild(spawnNewPlot);
+  // plotWrapper.appendChild(spawnNewPlot);
+  console.log(plotWrapper);
   coopBuyOptions.click(function () {
     if ($(this).hasClass("yes")) {
       buyTheCoop();
@@ -377,7 +379,7 @@ async function spawnSavedPlots() {
   } else {
     //console.log("NOTHING was spawned");
   }
-  //plotWrapper.append(spawnNewPlot);
+  plotWrapper.append(spawnNewPlot);
 }
 
 function checkCropType(plotInfo) {
@@ -463,7 +465,7 @@ function makePlotAvailable() {
   var NumPlotCurrent = $("#plotWrapper > .plotBox").length;
   //console.log(NumPlotsAvail);
   if (Money >= PlotCost && NumPlotsAvail == 0 && NumPlotCurrent <= 15) {
-    plotWrapper.append(spawnNewPlot);
+   
     //console.log(spawnNewPlot);
     console.log("a new plot has been added");
   } else {
