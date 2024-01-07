@@ -317,11 +317,10 @@ async function main() {
       // Nếu cốt truyện được gieo hạt
       var cropType = checkCropType($(this));
       harvestPlot($(this), cropType);
+      setMoney(email, Money);
       await editPlotItem(this.getAttribute("idplot"), "plot ready");
-      await setMoney(email, Money);
     } else if ($(this).hasClass("ready")) {
       //Trồng
-      await editPlotItem(this.getAttribute("idplot"), "plot ready");
       hideSeedSelectionMenu();
       function HideShowSelectionMenu() {
         showSeedSelectionMenu();
@@ -330,7 +329,7 @@ async function main() {
       // sử dụng setTimeout () để thực thi
       //ĐặtThờiGianChờ (,100);
       HideShowSelectionMenu();
-
+      
       // thiết lập ($ (this));
       currentPlot = $(this);
     }
@@ -355,12 +354,12 @@ async function main() {
   ConfirmWrapperOptions.click(async function () {
     //consoleLog($(this));
     if ($(this).hasClass("yes")) {
-      await createPlotItem(email);
       convertPlot(currentPlot);
       makePlotAvailable();
       hideConfirmMenu();
       plotWrapper.append(spawnNewPlot);
-      setMoney(email, Money);
+      await createPlotItem(email);
+      await setMoney(email, Money);
     } else if ($(this).hasClass("no")) {
       hideConfirmMenu();
     } else {
